@@ -1,0 +1,18 @@
+tr {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-style: none none solid none;
+  border-width: 2px;
+  border-color: #3C99DC;
+}
+
+th {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+}
