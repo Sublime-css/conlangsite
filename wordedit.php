@@ -54,12 +54,12 @@ function addMeaning() {
             <div class="spand" style="width: 150%;">
               <label for="name"><p>Word in LANGUAGE</p></label>
               <input name="name" type="text" />
-              <label for="pronunciation"><p>Romanisation</p></label>
+              <label for="pronunciation"><p>Pronunciation (IPA)</p></label>
               <input name="pronunciation" type="text" />
             </div>
             <div style="width: 100%;"></div>
             <div class="spand" style="width: 150%;">
-              <label for="romanisation">Romanisation</label>
+              <label for="romanisation"><p>Romanisation</p></label>
               <input name="romanisation" type="text" />
             </div>
           </div>
