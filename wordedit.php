@@ -11,15 +11,7 @@ $conlang = $conlangs->fetch_assoc();
 
 ?>
 
-<script>
 
-function addMeaning() {
-
-}
-
-
-
-</script>
 
 <head>
   <link rel="stylesheet" href="css/table.css">
@@ -48,8 +40,8 @@ function addMeaning() {
       <div class="pageHeader">
         <b>LANGUAGE's Dictionary</b>
       </div>
-      <div class="section" id="section1">
-        <form method="post">
+      <div class="section" >
+        <form method="post" id="primary">
           <div class="span">
             <div class="spand" style="width: 150%;">
               <label for="name"><p>Word in LANGUAGE</p></label>
@@ -64,7 +56,7 @@ function addMeaning() {
             </div>
           </div>
 
-          <ul class="spand" style="padding-right: 40px;">
+          <ul class="spand" style="padding-right: 40px;" id="meaning">
             <p>Meaning #1</p>
 
             <label for="pos"><p>Part of Speech</p></label>
@@ -103,9 +95,15 @@ function addMeaning() {
   </div>
 
   <script>
-    def addMeaning() {
 
-    }
+  function addMeaning() {
+    document.getElementById("primary").insertAdjacentHTML("beforeend", '<ul class="spand" style="padding-right: 40px;">' + document.getElementById("meaning").innerHTML + "</ul>");
+
+  };
+
+  addMeaning();
+
+
 
   </script>
 </body>

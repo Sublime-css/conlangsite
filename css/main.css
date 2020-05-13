@@ -1,13 +1,11 @@
 html {
   font-family: sans-serif;
-  height: 100%;
 }
 
 body {
   padding: 0;
   margin: 0;
   background-color: #EFEFEF;
-  height: 100%;
 }
 
 input {
