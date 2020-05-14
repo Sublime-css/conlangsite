@@ -15,6 +15,7 @@ $conlang = $conlangs->fetch_assoc();
 
 <head>
   <link rel="stylesheet" href="css/table.css">
+  <script src="js/wordedit.js"></script>
   <style>
     p {
       margin-bottom: 5px;
@@ -31,6 +32,15 @@ $conlang = $conlangs->fetch_assoc();
       background-color: #EEE;
       font-family: inherit;
       padding: 5px;
+      width: 100%;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    select {
+      width: 100%;
     }
   </style>
 </head>
@@ -41,7 +51,7 @@ $conlang = $conlangs->fetch_assoc();
         <b>LANGUAGE's Dictionary</b>
       </div>
       <div class="section" >
-        <form method="post" id="primary">
+        <form method="post" id="wordInfo">
           <div class="span">
             <div class="spand" style="width: 150%;">
               <label for="name"><p>Word in LANGUAGE</p></label>
@@ -55,36 +65,37 @@ $conlang = $conlangs->fetch_assoc();
               <input name="romanisation" type="text" />
             </div>
           </div>
-
-          <ul class="spand" style="padding-right: 40px;" id="meaning">
-            <p>Meaning #1</p>
-
-            <label for="pos"><p>Part of Speech</p></label>
-            <select name="pos">
-              <option value="noun">
-                noun
-              </option>
-              <option value="pronoun">
-                pronoun
-              </option>
-              <option value="verb">
-                verb
-              </option>
-              <option value="adjective">
-                adjective
-              </option>
-              <option value="numeral">
-                numeral
-              </option>
-            </select>
-            <label for="english"><p>English</p></label>
-            <input name="english" type="text"/>
-            <label for="meaning"><p>Additional Meaning</p></label>
-            <input name="meaning" type="text"/>
-            <label for="example"><p>Example of Meaning</p></label>
-            <textarea name="example" style="height: 8em;"></textarea>
-          </ul>
         </form>
+
+        <ul class="spand" style="padding-right: 40px;">
+          <form method="post" id="meaning">
+              <p>Meaning #1</p>
+              <label for="pos"><p>Part of Speech</p></label>
+              <select name="pos" onchange="saveMeaning()">
+                <option value="noun">
+                  noun
+                </option>
+                <option value="pronoun">
+                  pronoun
+                </option>
+                <option value="verb">
+                  verb
+                </option>
+                <option value="adjective">
+                  adjective
+                </option>
+                <option value="numeral">
+                  numeral
+                </option>
+              </select>
+              <label for="english"><p>English</p></label>
+              <input name="english" type="text" onfocusout="saveMeaning()"/>
+              <label for="meaning"><p>Additional Meaning</p></label>
+              <input name="meaning" type="text" onfocusout="saveMeaning()"/>
+              <label for="example"><p>Example of Meaning</p></label>
+              <textarea name="example" style="height: 8em;" onfocusout="saveMeaning()"></textarea>
+          </form>
+        </ul>
         <ul>
           <button onclick="addMeaning()" style="text-align: left;">Add Another Meaning</button>
         </ul>
@@ -93,17 +104,4 @@ $conlang = $conlangs->fetch_assoc();
       </div>
     </div>
   </div>
-
-  <script>
-
-  function addMeaning() {
-    document.getElementById("primary").insertAdjacentHTML("beforeend", '<ul class="spand" style="padding-right: 40px;">' + document.getElementById("meaning").innerHTML + "</ul>");
-
-  };
-
-  addMeaning();
-
-
-
-  </script>
 </body>
