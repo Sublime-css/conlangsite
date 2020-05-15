@@ -17,7 +17,7 @@ $conlang = $conlangs->fetch_assoc();
   <link rel="stylesheet" href="css/table.css">
   <script src="js/wordedit.js"></script>
   <style>
-    p {
+    .page p {
       margin-bottom: 5px;
     }
 
@@ -26,7 +26,7 @@ $conlang = $conlangs->fetch_assoc();
       padding: 5px;
     }
 
-    textarea {
+    .page textarea {
       outline: none;
       border: none;
       background-color: #EEE;
@@ -35,12 +35,16 @@ $conlang = $conlangs->fetch_assoc();
       width: 100%;
     }
 
-    input {
+    .page input {
       width: 100%;
     }
 
-    select {
+    .page select {
       width: 100%;
+    }
+
+    .page ul {
+      padding-right: 40px;
     }
   </style>
 </head>
@@ -55,48 +59,19 @@ $conlang = $conlangs->fetch_assoc();
           <div class="span">
             <div class="spand" style="width: 150%;">
               <label for="name"><p>Word in LANGUAGE</p></label>
-              <input name="name" type="text" />
+              <input name="name" type="text" value="<?php print $word["name"]; ?>" style="font-family: <?php print $conlang['script'];?>;"/>
               <label for="pronunciation"><p>Pronunciation (IPA)</p></label>
-              <input name="pronunciation" type="text" />
+              <input name="pronunciation" type="text" value="<?php print $word["pronunciation"]; ?>"/>
             </div>
             <div style="width: 100%;"></div>
             <div class="spand" style="width: 150%;">
               <label for="romanisation"><p>Romanisation</p></label>
-              <input name="romanisation" type="text" />
+              <input name="romanisation" type="text" value="<?php print $word["name_romanised"]; ?>"/>
             </div>
           </div>
         </form>
 
-        <ul class="spand" style="padding-right: 40px;">
-          <form method="post" id="meaning">
-              <p>Meaning #1</p>
-              <label for="pos"><p>Part of Speech</p></label>
-              <select name="pos" onchange="saveMeaning()">
-                <option value="noun">
-                  noun
-                </option>
-                <option value="pronoun">
-                  pronoun
-                </option>
-                <option value="verb">
-                  verb
-                </option>
-                <option value="adjective">
-                  adjective
-                </option>
-                <option value="numeral">
-                  numeral
-                </option>
-              </select>
-              <label for="english"><p>English</p></label>
-              <input name="english" type="text" onfocusout="saveMeaning()"/>
-              <label for="meaning"><p>Additional Meaning</p></label>
-              <input name="meaning" type="text" onfocusout="saveMeaning()"/>
-              <label for="example"><p>Example of Meaning</p></label>
-              <textarea name="example" style="height: 8em;" onfocusout="saveMeaning()"></textarea>
-          </form>
-        </ul>
-        <ul>
+        <ul id="addMeaning">
           <button onclick="addMeaning()" style="text-align: left;">Add Another Meaning</button>
         </ul>
 
