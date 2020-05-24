@@ -3,6 +3,13 @@
 include 'nav.php';
 include 'setup.php';
 
+if(isset($_GET["l"])) {
+  $conn->query("INSERT INTO words (conlang_id) VALUES (" . $_GET["l"] . ")");
+  $id = $conn->insert_id;
+  header("Location: wordedit.php?w=" . $id);
+}
+
+
 $words = $conn->query("SELECT * FROM words WHERE id=" . $_GET["w"]);
 $word = $words->fetch_assoc();
 

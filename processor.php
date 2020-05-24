@@ -17,7 +17,7 @@ if(isset($_POST["request"])) {
     print '
     <ul>
       <form method="post" id="' . $id . '">
-          <p>Meaning #' . $_POST["n"] . '</p>
+          <p>Meaning #' . $_POST["n"] . '</p> <a onclick="delMeaning()">Delete</a>
           <label for="pos"><p>Part of Speech</p></label>
           <select name="pos" onchange="saveMeaning()">
             <option selected disabled hidden>
@@ -65,7 +65,7 @@ if(isset($_POST["request"])) {
       print '
       <ul>
         <form method="post" id="' . $meaning["id"] . '">
-            <p>Meaning #' . $count . '</p>
+            <p>Meaning #' . $count . '</p> <a onclick="delMeaning()">Delete</a>
             <label for="pos"><p>Part of Speech</p></label>
             <select name="pos" onchange="saveMeaning()">
               <option disabled hidden>
@@ -97,6 +97,12 @@ if(isset($_POST["request"])) {
       </ul>
       ';
     }
+  }
+
+  //delMeaning()
+  if($_POST["request"] == "delMeaning") {
+    $conn->query("DELETE FROM meanings WHERE id=". $_POST["m"]);
+    echo "Deleted Meaning with ID " . $_POST["m"];
   }
 }
 

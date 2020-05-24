@@ -60,4 +60,26 @@ function getMeanings() { //similar functionality with addMeanings should be put 
   console.log("Requested Data from Server");
 }
 
+function delMeaning() { //similar functionality with addMeanings should be put into a function if possible
+  if(confirm("Are you sure you want do delete this meaning?") == false) {
+    return 0;
+  }
+
+  var xhr = new XMLHttpRequest();
+  firer = getFirer();
+
+  xhr.onreadystatechange = function() {
+      console.log("Server Reponse: " + this.responseText);
+
+      if (this.readyState == 4 && this.status == 200) {
+        firer.parentElement.remove();
+      }
+  };
+
+  xhr.open("POST", "processor.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send("request=delMeaning&m=" + firer.parentElement.id);
+  console.log("Requested Data from Server");
+}
+
 getMeanings();
