@@ -33,11 +33,14 @@ include 'setup.php';
             while($word = $words->fetch_assoc()) {
 
               $meanings = $conn->query("SELECT * FROM meanings WHERE word_id=" . $word["id"]);
-              $pos = "";
-              $english = "";
               $meaning = $meanings->fetch_assoc();
+              if (! empty($meaning["pos"])) {
               $pos = $meaning["pos"];
+              }
+
+              if (! empty($meaning["pos"])) {
               $english = $meaning["english"];
+              }
 
               print "<tr>
                       <th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family:" . $conlang["script"] . "\"><b>" . $word["name"] . "</b></a></th>
@@ -49,7 +52,8 @@ include 'setup.php';
 
             }
 
-        } else {
+        }
+        else {
             echo "<p style=\"color: red;\">ERROR: No words found</p>";
         }
         ?>
