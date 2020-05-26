@@ -104,6 +104,11 @@ if(isset($_POST["request"])) {
     $conn->query("DELETE FROM meanings WHERE id=". $_POST["m"]);
     echo "Deleted Meaning with ID " . $_POST["m"];
   }
+
+  //save() TOP text
+  if($_POST["request"] == "save") {
+    
+  }
 }
 
 ?>

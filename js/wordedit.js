@@ -82,4 +82,22 @@ function delMeaning() { //similar functionality with addMeanings should be put i
   console.log("Requested Data from Server");
 }
 
+function save() {
+  var xhr = new XMLHttpRequest();
+
+  
+
+  xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log("Server Reponse: " + this.responseText);
+      }
+  };
+
+    xhr.open("POST", "processor.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("request=save&m=");
+    console.log("Requested Data from Server");
+
+}
+
 getMeanings();

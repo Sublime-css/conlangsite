@@ -22,6 +22,9 @@ include 'setup.php';
           print $conlang['name_romanised'] . "'s Dictionary";
           ?>
         </b>
+          <?php
+          print "<a style=\"float: right;\" href=\"wordedit.php?l=" . $conlang['id'] . "\">Add Word</a>";
+          ?>
       </div>
 
       <table>
@@ -35,11 +38,12 @@ include 'setup.php';
               $meanings = $conn->query("SELECT * FROM meanings WHERE word_id=" . $word["id"]);
               $meaning = $meanings->fetch_assoc();
               if (! empty($meaning["pos"])) {
-              $pos = $meaning["pos"];
+                $pos = $meaning["pos"];
+                $english = $meaning["english"];
               }
-
-              if (! empty($meaning["pos"])) {
-              $english = $meaning["english"];
+              else {
+                $pos = "<span style=\"color: gray;\"><i>Missing</i></span>";
+                $english = "<span style=\"color: gray;\"><i>Missing</i></span>";
               }
 
               print "<tr>

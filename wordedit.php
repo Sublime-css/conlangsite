@@ -9,7 +9,6 @@ if(isset($_GET["l"])) {
   header("Location: wordedit.php?w=" . $id);
 }
 
-
 $words = $conn->query("SELECT * FROM words WHERE id=" . $_GET["w"]);
 $word = $words->fetch_assoc();
 
@@ -17,8 +16,6 @@ $conlangs = $conn->query("SELECT * FROM conlangs WHERE id=" . $word["conlang_id"
 $conlang = $conlangs->fetch_assoc();
 
 ?>
-
-
 
 <head>
   <link rel="stylesheet" href="css/table.css">
