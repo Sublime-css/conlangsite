@@ -87,6 +87,7 @@ function save() {
 
   
 
+
   xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         console.log("Server Reponse: " + this.responseText);
@@ -99,5 +100,7 @@ function save() {
     console.log("Requested Data from Server");
 
 }
+
+
 
 getMeanings();
