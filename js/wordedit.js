@@ -84,9 +84,7 @@ function delMeaning() { //similar functionality with addMeanings should be put i
 
 function save() {
   var xhr = new XMLHttpRequest();
-
-  
-
+  firer = getFirer();
 
   xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -94,11 +92,10 @@ function save() {
       }
   };
 
-    xhr.open("POST", "processor.php", true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("request=save&m=");
-    console.log("Requested Data from Server");
-
+  xhr.open("POST", "processor.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(firer.name + "=" + firer.value + "&request=save&w=" + params.get("w"));
+  console.log("Requested Data from Server");
 }
 
 

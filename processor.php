@@ -107,7 +107,9 @@ if(isset($_POST["request"])) {
 
   //save() TOP text
   if($_POST["request"] == "save") {
-    
+    $keys = array_keys($_POST);
+    $conn->query("UPDATE words SET " . $keys[0] . " = '" . $_POST[$keys[0]] . "' WHERE id=" . $_POST["w"]);
+    echo "Updated meaning at id \"" . $_POST["w"] . "\", field \"" . $keys[0] . "\" with \"" . $_POST[$keys[0]] . "\"";
   }
 }
 

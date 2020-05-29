@@ -63,14 +63,14 @@ $conlang = $conlangs->fetch_assoc();
           <div class="span">
             <div class="spand" style="width: 150%;">
               <label for="name"><p>Word in LANGUAGE</p></label>
-              <input name="name" type="text" value="<?php print $word["name"]; ?>" style="font-family: <?php print $conlang['script'];?>;"/>
+              <input name="name" type="text" value="<?php print $word["name"]; ?>" style="font-family: <?php print $conlang['script'];?>;" onfocusout="save()"/>
               <label for="pronunciation"><p>Pronunciation (IPA)</p></label>
-              <input name="pronunciation" type="text" value="<?php print $word["pronunciation"]; ?>"/>
+              <input name="pronunciation" type="text" value="<?php print $word["pronunciation"]; ?>"  onfocusout="save()"/>
             </div>
             <div style="width: 100%;"></div>
             <div class="spand" style="width: 150%;">
               <label for="romanisation"><p>Romanisation</p></label>
-              <input name="romanisation" type="text" value="<?php print $word["name_romanised"]; ?>"/>
+              <input name="romanisation" type="text" value="<?php print $word["name_romanised"]; ?>"  onfocusout="save()"/>
             </div>
           </div>
         </form>
