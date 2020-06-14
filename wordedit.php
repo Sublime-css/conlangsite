@@ -19,6 +19,7 @@ $conlang = $conlangs->fetch_assoc();
 
 <head>
   <link rel="stylesheet" href="css/table.css">
+  <script src="js/main.js"></script>
   <script src="js/wordedit.js"></script>
   <style>
     .page p {

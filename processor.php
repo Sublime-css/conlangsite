@@ -1,23 +1,32 @@
 <?php
 include 'setup.php';
 
+function getFileType($file) {
+  return strtolower(pathinfo($file,PATHINFO_EXTENSION));
+}
+
+if(isset($_REQUEST["test"])) {
+  echo "TEST!";
+}
+
 if(isset($_POST["request"])) {
 
   //saveMeaning()
   if($_POST["request"] == "saveMeaning") {
     $keys = array_keys($_POST);
-    $conn->query("UPDATE meanings SET " . $keys[0] . " = '" . $_POST[$keys[0]] . "' WHERE id=" . $_POST["m"]);
-    echo "Updated meaning at id \"" . $_POST["m"] . "\", field \"" . $keys[0] . "\" with \"" . $_POST[$keys[0]] . "\"";
+    $conn->query("UPDATE meanings SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["m"]);
+    echo "Updated meaning at id \"" . $_POST["m"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
   }
 
   //addMeaning()
   if($_POST["request"] == "addMeaning") {
     $conn->query("INSERT INTO meanings (word_id) VALUES (" . $_POST["w"] . ")");
     $id = $conn->insert_id;
+    $n = 2;
     print '
     <ul>
       <form method="post" id="' . $id . '">
-          <p>Meaning #' . $_POST["n"] . '</p> <a onclick="delMeaning()">Delete</a>
+          <p>Meaning #' . $n . '</p> <a onclick="delMeaning()">Delete</a>
           <label for="pos"><p>Part of Speech</p></label>
           <select name="pos" onchange="saveMeaning()">
             <option selected disabled hidden>
@@ -107,9 +116,33 @@ if(isset($_POST["request"])) {
 
   //save() TOP text
   if($_POST["request"] == "save") {
-    $keys = array_keys($_POST);
-    $conn->query("UPDATE words SET " . $keys[0] . " = '" . $_POST[$keys[0]] . "' WHERE id=" . $_POST["w"]);
-    echo "Updated meaning at id \"" . $_POST["w"] . "\", field \"" . $keys[0] . "\" with \"" . $_POST[$keys[0]] . "\"";
+    $conn->query("UPDATE words SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["w"]);
+    echo "Updated meaning at id \"" . $_POST["w"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
+  }
+
+  //fontUpload()
+  if($_POST["request"] == "fontUpload") {
+    $dir = "scripts/";
+
+
+    //file checks
+    if (getFileType($target) != "ttf") {
+      echo "Not a .ttf file.";
+    } elseif ($_FILES["script"]["size"] > 5000000) { //not allowing files over 5MB this may be very large check later
+      echo "This file is too large.";
+    } else {
+      echo "Uploading";
+
+      $conn->query("INSERT INTO scripts (name, editors) VALUES (" . $_POST["name"] . ", " . $_POST["editors"] . ")");
+      $id = $conn->insert_id;
+      $target = $dir . $id;
+      if (file_exists($target)) {
+        echo "DATABASE ERROR, ID NOT SET PROPERLY";
+      } else {
+        move_uploaded_file($_FILES["script"], $target);
+      }
+    }
+
   }
 }
 

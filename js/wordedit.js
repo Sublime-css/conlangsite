@@ -1,103 +1,82 @@
-let params = new URLSearchParams(location.search);
-//js = php
-//params.get("key") = $_GET["key"]
-
-
-function getFirer() { //gets HTML element that fired the event
-  return event.target || event.srcElement;
-}
+//Javascript for wordedit.php
+//mostly deals with ajax requests
+//request function is in main.js!
 
 function addMeaning() {
-  var n = "2";
-  var xhr = new XMLHttpRequest();
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: { //params object is made into string, is very nice
+      request: "addMeaning",
+      w: params.get("w"),
+    }
+  })
+    .then(function(result) {
+      button = document.getElementById("addMeaning");
+      button.insertAdjacentHTML("beforebegin", result);
+    });
 
-  xhr.onreadystatechange = function() {
-      console.log("Server Reponse: " + this.responseText);
-
-      if (this.readyState == 4 && this.status == 200) {
-        button = document.getElementById("addMeaning");
-        button.insertAdjacentHTML("beforebegin", this.responseText);
-        return 1;
-      }
-  };
-
-  xhr.open("POST", "processor.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send("request=addMeaning&n=" + n + "&w=" + params.get("w"));
-  console.log("Requested Data from Server");
 }
 
 function saveMeaning() {
   firer = getFirer();
-  var xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function() {
-      console.log("Server Reponse: " + this.responseText);
-  };
-
-  xhr.open("POST", "processor.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send(firer.name + "=" + firer.value + "&request=saveMeaning&m=" + firer.parentElement.id);
-  console.log("Requested Data from Server");
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: { //params object is made into string, is very nice
+      request: "saveMeaning",
+      m: firer.parentElement.id,
+      field: firer.name,
+      value: firer.value
+    }
+  });
 }
 
-function getMeanings() { //similar functionality with addMeanings should be put into a function if possible
-  var xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function() {
-      console.log("Server Reponse: " + this.responseText);
-
-      if (this.readyState == 4 && this.status == 200) {
-        button = document.getElementById("addMeaning");
-        button.insertAdjacentHTML("beforebegin", this.responseText);
-        return 1;
+function delMeaning() {
+  if(confirm("Are you sure you want to delete this meaning?")) {
+    firer = getFirer();
+    request({
+      method: "POST",
+      url: "processor.php",
+      params: { //params object is made into string, is very nice
+        request: "delMeaning",
+        m: firer.parentElement.id
       }
-  };
-
-  xhr.open("POST", "processor.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send("request=getMeanings&w=" + params.get("w"));
-  console.log("Requested Data from Server");
-}
-
-function delMeaning() { //similar functionality with addMeanings should be put into a function if possible
-  if(confirm("Are you sure you want do delete this meaning?") == false) {
-    return 0;
+    })
+      .then(function(result) {
+        console.log(result);
+      });
+    firer.parentElement.remove();
   }
-
-  var xhr = new XMLHttpRequest();
-  firer = getFirer();
-
-  xhr.onreadystatechange = function() {
-      console.log("Server Reponse: " + this.responseText);
-
-      if (this.readyState == 4 && this.status == 200) {
-        firer.parentElement.remove();
-      }
-  };
-
-  xhr.open("POST", "processor.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send("request=delMeaning&m=" + firer.parentElement.id);
-  console.log("Requested Data from Server");
 }
 
 function save() {
-  var xhr = new XMLHttpRequest();
   firer = getFirer();
-
-  xhr.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log("Server Reponse: " + this.responseText);
-      }
-  };
-
-  xhr.open("POST", "processor.php", true);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send(firer.name + "=" + firer.value + "&request=save&w=" + params.get("w"));
-  console.log("Requested Data from Server");
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: { //params object is made into string, is very nice
+      request: "save",
+      w: 1,
+      field: firer.name,
+      value: firer.value
+    }
+  })
+    .then(function(result) {
+      console.log(result);
+    });
 }
 
-
-
-getMeanings();
+//getMeanings request
+request({
+  method: "POST",
+  url: "processor.php",
+  params: { //params object is made into string, is very nice
+    request: "getMeanings",
+    w: params.get("w")
+  }
+})
+  .then(function(result) {
+    button = document.getElementById("addMeaning");
+    button.insertAdjacentHTML("beforebegin", result);
+  });

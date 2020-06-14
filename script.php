@@ -3,6 +3,9 @@
 
 <body>
   <div class="page">
-    g 
+    <div class="wrapper" class="spand">
+      <p>Upload A Script</p>
+      <input type="file" name="script"/>
+    </div>
   </div>
 </body>
