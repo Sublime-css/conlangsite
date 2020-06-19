@@ -10,6 +10,8 @@ include 'setup.php';
 
 <head>
   <link rel="stylesheet" href="css/table.css">
+  <script src="js/main.js"></script>
+  <script src="js/dictionary.js"></script>
 </head>
 <body>
   <div class="page">
@@ -27,8 +29,8 @@ include 'setup.php';
           ?>
       </div>
 
-      <table>
-        <?php
+      <table id="table">
+        <!--
         $words = $conn->query("SELECT * FROM words WHERE conlang_id=" . $_GET["l"]);
 
         if ($words->num_rows > 0) {
@@ -60,7 +62,7 @@ include 'setup.php';
         else {
             echo "<p style=\"color: red;\">ERROR: No words found</p>";
         }
-        ?>
+        -->
       </table>
     </div>
   </div>

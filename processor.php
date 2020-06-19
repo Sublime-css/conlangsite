@@ -124,7 +124,6 @@ if(isset($_POST["request"])) {
   if($_POST["request"] == "fontUpload") {
     $dir = "scripts/";
 
-
     //file checks
     if (getFileType($target) != "ttf") {
       echo "Not a .ttf file.";
@@ -142,7 +141,45 @@ if(isset($_POST["request"])) {
         move_uploaded_file($_FILES["script"], $target);
       }
     }
+  }
 
+  if($_POST["request"] == "getLanguages") {
+    $languages = $conn->query("SELECT * FROM conlangs LIMIT " . $_POST["offset"] . ", " . $_POST["limit"]);
+
+    // output data of each row
+    while($language = $languages->fetch_assoc()) {
+      print "<tr>
+              <th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: " . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>
+              <th>" . $language["name_romanised"] . "</th>
+              <th>" . $language["editors"] . "</th>
+            </tr>";
+    }
+  }
+
+  if($_POST["request"] == "getWords") {
+    $words = $conn->query("SELECT * FROM words WHERE conlang_id=" . $_POST["l"] . " LIMIT " . $_POST["offset"] . ", " . $_POST["limit"]);
+    $languages = $conn->query("SELECT * FROM conlangs WHERE id=" . $_POST["l"]);
+    $language = $languages->fetch_assoc();
+
+    while($word = $words->fetch_assoc()) {
+      $meanings = $conn->query("SELECT * FROM meanings WHERE word_id=" . $word["id"] . " LIMIT 5");
+
+      $pos = array();
+      $english = array();
+      while($meaning = $meanings->fetch_assoc()) {
+        if ($meaning["pos"] != "") { $pos[] = $meaning["pos"]; }
+        if ($meaning["english"] != "") { $english[] = $meaning["english"]; }
+      }
+      $pos = join(", ", $pos);
+      $english = join(", ", $english);
+
+      print "<tr>
+              <th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family:" . $language["script_id"] . "\"><b>" . $word["name"] . "</b></a></th>
+              <th>" . $word["name_romanised"] . "</th>
+              <th>" . $pos . "</th>
+              <th>" . $english . "</th>
+            </tr>";
+    }
   }
 }
 

@@ -36,7 +36,7 @@ request({
   method: "GET",
   url: "text.txt",
   params: { //params object is made into string, is very nice
-    test: 1
+    test: 1 //parameters that would normally in the URL for a request with a GET method
   }
 })
   .then(function(result) {
