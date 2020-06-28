@@ -61,7 +61,8 @@ svg {
 }
 
 .login a {
-  width: 100%;
+  text-align: right;
+  color: black;
 }
 
 .span {
@@ -158,10 +159,6 @@ svg {
 svg {
   max-width: auto;
   max-height: 3em;
-}
-
-.login {
-  text-align: right;
 }
 
 .selected {

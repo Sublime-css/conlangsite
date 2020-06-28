@@ -46,3 +46,55 @@ request({
     console.error("OH HECK ERROR");
   });
 */
+
+
+//user register
+function addUser() {
+  email = document.getElementById("email");
+  uname = document.getElementById("uname");
+  pwd = document.getElementById("passw");
+
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: {
+      request: "addUser",
+      email: email.value,
+      uname: uname.value,
+      pwd: pwd.value
+    }
+  })
+    .then(function(result) {
+      console.log(result);
+    });
+}
+
+//user logout
+function destoryUser() {
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: {
+      request: "destroyUser"
+    }
+  })
+}
+
+//user login
+function checkUser() {
+  uname = document.getElementById("uname2");
+  pwd = document.getElementById("passw2");
+
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: {
+      request: "checkUser",
+      uname: uname.value,
+      pwd: pwd.value
+    }
+  })
+    .then(function(result) {
+      console.log(result);
+    });
+}

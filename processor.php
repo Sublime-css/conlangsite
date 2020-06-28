@@ -5,6 +5,19 @@ function getFileType($file) {
   return strtolower(pathinfo($file,PATHINFO_EXTENSION));
 }
 
+//getting output from the database
+//turns into HTML entities like \&lt;
+function cleanHTML($array) {
+  foreach ($array as $key => $value) {
+    $array[$key] = htmlspecialchars(htmlentities($value));
+    return $array;
+  }
+}
+
+function cleanUserInput($string) {
+  return 0;
+}
+
 if(isset($_REQUEST["test"])) {
   echo "TEST!";
 }
@@ -66,6 +79,7 @@ if(isset($_POST["request"])) {
 
     $count = 0;
     while($meaning = $meanings->fetch_assoc()) {
+      $meaning = cleanHTML($meaning);
       $count++;
       $posSelected = array("", "");
       $selected = array_search($meaning["pos"], $pos);
@@ -167,6 +181,7 @@ if(isset($_POST["request"])) {
       $pos = array();
       $english = array();
       while($meaning = $meanings->fetch_assoc()) {
+        $meaning = cleanHTML($meaning);
         if ($meaning["pos"] != "") { $pos[] = $meaning["pos"]; }
         if ($meaning["english"] != "") { $english[] = $meaning["english"]; }
       }
@@ -180,6 +195,39 @@ if(isset($_POST["request"])) {
               <th>" . $english . "</th>
             </tr>";
     }
+  }
+
+  if($_POST["request"] == "addUser") {
+    $stmt = $conn->prepare("INSERT INTO users (name, pwd, email) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $uname, $pwd, $email);
+
+    $pwd = password_hash(trim($_POST["pwd"]), PASSWORD_DEFAULT);
+    $uname = hash("sha256", trim($_POST["uname"]));
+    $email = hash("sha256", trim($_POST["email"]));
+    echo $uname;
+
+    $stmt->execute();
+    $stmt->close();
+  }
+
+  if($_POST["request"] == "checkUser") {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE name=?");
+    $stmt->bind_param("s", $uname);
+    $uname = hash("sha256", trim($_POST["uname"]));
+    $stmt->execute();
+    $users = $stmt->get_result();
+    $user = $users->fetch_assoc();
+
+    if(password_verify(trim($_POST["pwd"]), $user["pwd"])) {
+      $_SESSION["uname"] = $user["name"];
+      echo "Logged in as " . $_SESSION["uname"];
+    } else {
+      echo "Failed";
+    }
+  }
+
+  if($_POST == "destroyUser") {
+    unset($_SESSION["uname"]);
   }
 }
 

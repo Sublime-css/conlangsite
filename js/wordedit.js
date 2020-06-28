@@ -57,7 +57,7 @@ function save() {
     url: "processor.php",
     params: { //params object is made into string, is very nice
       request: "save",
-      w: 1,
+      w: params.get("w"),
       field: firer.name,
       value: firer.value
     }

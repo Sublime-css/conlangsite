@@ -5,12 +5,13 @@
   <title>LANGFORGE</title>
   <link rel="stylesheet" href="css/grid.css">
   <link rel="stylesheet" href="css/main.css">
+  <script src="js/main.js"></script>
 </head>
 
 <body>
   <div class="nav">
     <div class="login span margins">
-      <a>SIGN MENU</a>
+        <a onclick="signup()">SIGN UP</a> | <a onclick="login()">LOG IN</a> 
     </div>
     <div class="header span margins" style="">
       <h1 style="padding-right: 10px;">Lang</h1>
