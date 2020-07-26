@@ -162,10 +162,17 @@ if(isset($_POST["request"])) {
 
     // output data of each row
     while($language = $languages->fetch_assoc()) {
+      $editorsList = array(); //List of editors for the front end table
+      $editors = $conn->query("SELECT editors.conlang_id, users.name FROM editors LEFT JOIN users ON editors.user_id=users.id WHERE conlang_id=" . $language["id"]);
+      while ($editor = $editors->fetch_assoc()) { $editorsList[] = $editor["name"]; }
+      $editorsList = join(", ", $editorsList);
+
+
+
       print "<tr>
               <th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: " . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>
               <th>" . $language["name_romanised"] . "</th>
-              <th>" . $language["editors"] . "</th>
+              <th>" . $editorsList . "</th>
             </tr>";
     }
   }
@@ -202,7 +209,7 @@ if(isset($_POST["request"])) {
     $stmt->bind_param("sss", $uname, $pwd, $email);
 
     $pwd = password_hash(trim($_POST["pwd"]), PASSWORD_DEFAULT);
-    $uname = hash("sha256", trim($_POST["uname"]));
+    $uname = $_POST["uname"];
     $email = hash("sha256", trim($_POST["email"]));
     echo $uname;
 
@@ -213,7 +220,7 @@ if(isset($_POST["request"])) {
   if($_POST["request"] == "checkUser") {
     $stmt = $conn->prepare("SELECT * FROM users WHERE name=?");
     $stmt->bind_param("s", $uname);
-    $uname = hash("sha256", trim($_POST["uname"]));
+    $uname = $_POST["uname"];
     $stmt->execute();
     $users = $stmt->get_result();
     $user = $users->fetch_assoc();

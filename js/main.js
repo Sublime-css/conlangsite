@@ -82,8 +82,8 @@ function destoryUser() {
 
 //user login
 function checkUser() {
-  uname = document.getElementById("uname2");
-  pwd = document.getElementById("passw2");
+  uname = document.getElementById("uname");
+  pwd = document.getElementById("passw");
 
   request({
     method: "POST",

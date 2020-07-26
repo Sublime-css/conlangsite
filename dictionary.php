@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <?php
-if (is_null($_GET["l"])) {
-  header("Location: index.php");
-}
-
 include 'nav.php';
 include 'setup.php';
+
+if(!(isset($_GET["l"]))) {
+  if(isset($_SESSION["l"])) {
+    header("Location: dictionary.php?l=" . $_SESSION["l"]);
+  } else {
+    header("Location: index.php");
+  }
+}
+$_SESSION["l"] = $_GET["l"];
+
+
+
 ?>
 
 <head>
