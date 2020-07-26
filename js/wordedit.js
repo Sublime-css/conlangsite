@@ -67,6 +67,25 @@ function save() {
     });
 }
 
+//delete word
+function deleteWord() {
+  if(confirm("Are you sure you want to delete this word?")) {
+    request({
+      method: "POST",
+      url: "processor.php",
+      params: { //params object is made into string, is very nice
+        request: "save",
+        w: params.get("w"),
+        field: firer.name,
+        value: firer.value
+      }
+    })
+      .then(function(result) {
+        console.log(result);
+      });
+  }
+}
+
 //getMeanings request
 request({
   method: "POST",

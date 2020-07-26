@@ -223,3 +223,9 @@ input {
   z-index: 2;
   float: center;
 }
+
+.tabbed a {
+  border-style: none none none solid;
+  border-color: white;
+  border-width: thin;
+}

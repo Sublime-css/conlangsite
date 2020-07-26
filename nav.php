@@ -44,11 +44,11 @@ include "setup.php";
       </svg>
     </div>
 
-    <div class="menu span margins">
+    <div class="menu span margins tabbed">
           <a id="dictionary" href="dictionary.php">DICTIONARY</a>
           <a id="phonology"  href="phonology.php">PHONOLOGY</a>
           <a id="script" href="script.php">SCRIPT</a>
-          <a id="index" href="index.php" style="text-align:right;">LANGUAGES</a>
+          <a id="index" href="index.php" style="text-align:right; border-style: none solid none solid;">LANGUAGES</a>
     </div>
 
   </div>

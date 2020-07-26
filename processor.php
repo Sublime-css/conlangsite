@@ -134,6 +134,15 @@ if(isset($_POST["request"])) {
     echo "Updated meaning at id \"" . $_POST["w"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
   }
 
+  //delete() word
+  if($_POST["request"] == "delete") {
+    $words = $conn->query("SELECT * FROM words WHERE id=" . $_POST["w"]);
+    $word = $words->fetch_assoc();
+    $conn->query("DELETE FROM meanings WHERE word_id=" . $_POST["w"]);
+    $conn->query("DELETE FROM words WHERE id=" . $_POST["w"]);
+    header("Location: dictionary.php?l=" . $word["conlang_id"]);
+  }
+
   //fontUpload()
   if($_POST["request"] == "fontUpload") {
     $dir = "scripts/";
@@ -233,9 +242,23 @@ if(isset($_POST["request"])) {
     }
   }
 
-  if($_POST == "destroyUser") {
+  if($_POST["request"] == "destroyUser") {
     unset($_SESSION["uname"]);
   }
+
+  if($_POST["request"] == "addLanguage") {
+
+  }
+
+  if($_POST["request"] == "deleteLanguage") {
+
+  }
+
+  if($_POST["request"] == "updateLanguage") {
+    
+  }
+
 }
+
 
 ?>

@@ -15,6 +15,25 @@ $conlang = $conlangs->fetch_assoc();
   <div class="page">
     <head>
       <link rel="stylesheet" href="css/table.css">
+      <script>
+      //delete() word
+      //delete word
+      function deleteWord() {
+        if(confirm("Are you sure you want to delete this word?")) {
+          request({
+            method: "POST",
+            url: "processor.php",
+            params: { //params object is made into string, is very nice
+              request: "delete",
+              w: params.get("w"),
+            }
+          })
+            .then(function(result) {
+              console.log(result);
+            });
+        }
+      }
+    </script>
     </head>
     <div class="wrapper">
       <div class="pageHeader">
@@ -25,7 +44,7 @@ $conlang = $conlangs->fetch_assoc();
           <h1 style="font-family: <?php print $conlang['script']; ?>"><?php print $word['name'];?></h1>
           <div style="width: 100%;"></div> <!-- this is literally just to space edit/delete from the word -->
           <a href="wordedit.php?w=<?php print $_GET["w"]?>">edit</a>
-          <a>delete</a>
+          <a onclick="deleteWord()">delete</a>
         </div>
         <h3><?php print $word['name_romanised'];?></h3>
         <h3 style="color: #3C99DC">[<?php print $word['pronunciation'];?>]</h3>
