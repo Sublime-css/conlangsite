@@ -140,7 +140,7 @@ if(isset($_POST["request"])) {
     $word = $words->fetch_assoc();
     $conn->query("DELETE FROM meanings WHERE word_id=" . $_POST["w"]);
     $conn->query("DELETE FROM words WHERE id=" . $_POST["w"]);
-    header("Location: dictionary.php?l=" . $word["conlang_id"]);
+    echo "dictionary.php?l=" . $word["conlang_id"];
   }
 
   //fontUpload()
@@ -209,6 +209,7 @@ if(isset($_POST["request"])) {
               <th>" . $word["name_romanised"] . "</th>
               <th>" . $pos . "</th>
               <th>" . $english . "</th>
+              <th style=\"width: auto; display: flex;\"><a href=\"wordedit.php?w=" . $word["id"] . "\">Edit</a><a onclick=\"deleteWord()\">Delete</a></th>
             </tr>";
     }
   }
@@ -255,7 +256,7 @@ if(isset($_POST["request"])) {
   }
 
   if($_POST["request"] == "updateLanguage") {
-    
+
   }
 
 }

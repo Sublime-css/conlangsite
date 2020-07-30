@@ -29,7 +29,7 @@ $conlang = $conlangs->fetch_assoc();
             }
           })
             .then(function(result) {
-              console.log(result);
+              window.location.replace(result); //php returns the page to redirect to, the dictionary page for the language
             });
         }
       }
