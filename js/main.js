@@ -98,3 +98,32 @@ function checkUser() {
       console.log(result);
     });
 }
+
+//gets user from $_SESSION
+function getUID() {
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: {
+      request: "getUID"
+    }
+  })
+    .then(function(result) {
+      console.log(result);
+    });
+}
+
+function checkUserPerms(conlang_id) {
+  conlang_id = Number(conlang_id);
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: {
+      request: "checkUserPerms",
+      conlang_id: conlang_id
+    }
+  })
+    .then(function(result) {
+      console.log(result);
+    });
+}

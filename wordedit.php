@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 include 'nav.php';
-include 'setup.php';
 
 if(isset($_GET["l"])) {
   $conn->query("INSERT INTO words (conlang_id) VALUES (" . $_GET["l"] . ")");
@@ -14,7 +13,6 @@ $word = $words->fetch_assoc();
 
 $conlangs = $conn->query("SELECT * FROM conlangs WHERE id=" . $word["conlang_id"]);
 $conlang = $conlangs->fetch_assoc();
-
 ?>
 
 <head>

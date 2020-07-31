@@ -1,6 +1,7 @@
 
 
 <?php
+session_start();
 $servername = "localhost";
 $username = "sec_user";
 $password = "greenChair153";

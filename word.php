@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 include 'nav.php';
-include 'setup.php';
 
 $words = $conn->query("SELECT * FROM words WHERE id=" . $_GET["w"]);
 $word = $words->fetch_assoc();
@@ -37,7 +36,13 @@ $conlang = $conlangs->fetch_assoc();
     </head>
     <div class="wrapper">
       <div class="pageHeader">
-        <b><?php print $conlang["name_romanised"]?>'s Dictionary</b>
+        <b><?php
+        if($conlang["name_romanised"] == "") {
+          print $conlang["name"] . "'s Dictionary";
+        } else {
+          print $conlang['name_romanised'] . "'s Dictionary";
+        }
+        ?></b>
       </div>
       <div class="section">
         <div class="span">

@@ -61,7 +61,6 @@ svg {
   color: #3C99DC;
   background-color: #EFEFEF;
 }
-
 .login a {
   text-align: right;
   color: black;
@@ -95,9 +94,13 @@ svg {
 
 .nav {
   background-color: #3C99DC;
-  display: flex;
+  background-image: url("../images/nav.png");
+  background-size: cover;
+}
+
+.overlay {
   flex-direction: column;
-  align-items: flex-start;
+  background-color: #3333336b;
 }
 
 .margins {
@@ -187,6 +190,7 @@ a {
 .page input {
  background-color: #EEE;
 }
+
 
 .section {
   padding: 10px;

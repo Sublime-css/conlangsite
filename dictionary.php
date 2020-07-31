@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 include 'nav.php';
-include 'setup.php';
 
 if(!(isset($_GET["l"]))) {
   if(isset($_SESSION["l"])) {
@@ -28,7 +27,12 @@ $_SESSION["l"] = $_GET["l"];
           <?php
           $conlangs = $conn->query("SELECT * FROM conlangs WHERE id=" . $_GET["l"]);
           $conlang = $conlangs->fetch_assoc();
-          print $conlang['name_romanised'] . "'s Dictionary";
+          if($conlang["name_romanised"] == "") {
+            print $conlang["name"] . "'s Dictionary";
+          } else {
+            print $conlang['name_romanised'] . "'s Dictionary";
+          }
+
           ?>
         </b>
           <?php

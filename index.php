@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 include "nav.php";
-include "setup.php";
 ?>
 <head>
   <script src="js/index.js"></script>

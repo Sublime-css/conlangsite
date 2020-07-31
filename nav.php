@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
 <?php
-session_start();
 include "setup.php";
+
+function checkUserPerms($conn, $conlang_id) {
+  $editors = $conn->query("SELECT * from editors WHERE conlang_id=" . $conlang_id);
+  $editorsList = array();
+  while($editor = $editors->fetch_assoc()) {
+    $editorsList[] = $editor["user_id"];
+  }
+  return in_array($_SESSION["uid"], $editorsList);
+}
 ?>
 <head>
   <title>LANGFORGE</title>
@@ -13,44 +21,45 @@ include "setup.php";
 
 <body>
   <div class="nav">
-    <div class="login span margins">
-        <a onclick="signup()">SIGN UP</a> | <a onclick="login()">LOG IN</a>
-    </div>
-    <div class="header span margins" style="">
-      <h1 style="padding-right: 10px;"><?php ?></h1>
-      <div class="search">
-        <form class="span">
-          <input type="text" name="search" />
-          <select name="searchType">
-            <option value="conlang">
-              Searching Conlang Words
-            </option>
-            <option value="english">
-              Searching English Words
-            </option>
-            <option value="languages">
-              Searching Languages
-            </option>
-          </select>
-          <button>
-            <svg>
-              <image href="images/magnifyingGlass.svg">Submit</image>
-            </svg>
-          </button>
-        </form>
+    <div class="overlay">
+      <div class="login span margins">
+          <a onclick="signup()">SIGN UP</a> | <a onclick="login()">LOG IN</a>
       </div>
-      <svg viewBox="0 0 300 30" style="width: 300px;">
-        <image href="images/langforge.svg">LANGFORGE</image>
-      </svg>
-    </div>
+      <div class="header span margins" style="">
+        <h1 style="padding-right: 10px;"><?php ?></h1>
+        <div class="search">
+          <form class="span">
+            <input type="text" name="search" />
+            <select name="searchType">
+              <option value="conlang">
+                Searching Conlang Words
+              </option>
+              <option value="english">
+                Searching English Words
+              </option>
+              <option value="languages">
+                Searching Languages
+              </option>
+            </select>
+            <button>
+              <svg>
+                <image href="images/magnifyingGlass.svg">Submit</image>
+              </svg>
+            </button>
+          </form>
+        </div>
+        <svg viewBox="0 0 300 30" style="width: 300px;">
+          <image href="images/langforge.svg">LANGFORGE</image>
+        </svg>
+      </div>
 
-    <div class="menu span margins tabbed">
-          <a id="dictionary" href="dictionary.php">DICTIONARY</a>
-          <a id="phonology"  href="phonology.php">PHONOLOGY</a>
-          <a id="script" href="script.php">SCRIPT</a>
-          <a id="index" href="index.php" style="text-align:right; border-style: none solid none solid;">LANGUAGES</a>
+      <div class="menu span margins tabbed">
+            <a id="dictionary" href="dictionary.php">DICTIONARY</a>
+            <a id="phonology"  href="phonology.php">PHONOLOGY</a>
+            <a id="script" href="script.php">SCRIPT</a>
+            <a id="index" href="index.php" style="text-align:right; border-style: none solid none solid;">LANGUAGES</a>
+      </div>
     </div>
-
   </div>
 
   <script>

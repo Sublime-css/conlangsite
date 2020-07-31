@@ -18,6 +18,16 @@ function cleanUserInput($string) {
   return 0;
 }
 
+//check if user has right permission to edit conlang
+function checkUserPerms($conn, $conlang_id) {
+  $editors = $conn->query("SELECT * from editors WHERE conlang_id=" . $conlang_id);
+  $editorsList = array();
+  while($editor = $editors->fetch_assoc()) {
+    $editorsList[] = $editor["user_id"];
+  }
+  return in_array($_SESSION["uid"], $editorsList);
+}
+
 if(isset($_REQUEST["test"])) {
   echo "TEST!";
 }
@@ -237,7 +247,9 @@ if(isset($_POST["request"])) {
 
     if(password_verify(trim($_POST["pwd"]), $user["pwd"])) {
       $_SESSION["uname"] = $user["name"];
+      $_SESSION["uid"] = $user["id"];
       echo "Logged in as " . $_SESSION["uname"];
+      echo " " . $_SESSION["uid"];
     } else {
       echo "Failed";
     }
@@ -245,6 +257,15 @@ if(isset($_POST["request"])) {
 
   if($_POST["request"] == "destroyUser") {
     unset($_SESSION["uname"]);
+  }
+
+  if($_POST["request"] == "getUID") {
+    echo $_SESSION["uid"];
+    echo $_SESSION["uname"];
+  }
+
+  if($_POST["request"] == "checkUserPerms") {
+    echo checkUserPerms($conn, $_POST["conlang_id"]);
   }
 
   if($_POST["request"] == "addLanguage") {
