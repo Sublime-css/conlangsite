@@ -24,7 +24,7 @@ function deleteWord() {
       url: "processor.php",
       params: { //params object is made into string, is very nice
         request: "delete",
-        w: params.get("w"),
+        w: firer.name,
       }
     })
       .then(function(result) {

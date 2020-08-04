@@ -13,7 +13,7 @@
           <label for="uname">Username</label>
           <input id="uname" name="uname" type="text"/>
           <label for="pwd">Password</label>
-          <input id="passw" name="pwd" type="text"/>
+          <input id="passw" name="pwd" type="password"/>
         </div>
       </form>
       <button onclick="addUser()">Sign up</button>

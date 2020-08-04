@@ -13,6 +13,11 @@ $word = $words->fetch_assoc();
 
 $conlangs = $conn->query("SELECT * FROM conlangs WHERE id=" . $word["conlang_id"]);
 $conlang = $conlangs->fetch_assoc();
+
+if(!(checkUserPerms($conn, $conlang["id"]))) {
+  print("You do not have access to this page.");
+  die();
+}
 ?>
 
 <head>
@@ -67,8 +72,8 @@ $conlang = $conlangs->fetch_assoc();
             </div>
             <div style="width: 100%;"></div>
             <div class="spand" style="width: 150%;">
-              <label for="romanisation"><p>Romanisation</p></label>
-              <input name="romanisation" type="text" value="<?php print $word["name_romanised"]; ?>"  onfocusout="save()"/>
+              <label for="name_romanised"><p>Romanisation</p></label>
+              <input name="name_romanised" type="text" value="<?php print $word["name_romanised"]; ?>"  onfocusout="save()"/>
             </div>
           </div>
         </form>

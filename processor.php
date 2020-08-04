@@ -20,12 +20,14 @@ function cleanUserInput($string) {
 
 //check if user has right permission to edit conlang
 function checkUserPerms($conn, $conlang_id) {
-  $editors = $conn->query("SELECT * from editors WHERE conlang_id=" . $conlang_id);
-  $editorsList = array();
-  while($editor = $editors->fetch_assoc()) {
-    $editorsList[] = $editor["user_id"];
+  if(isset($_SESSION["uid"])) {
+    $editors = $conn->query("SELECT * from editors WHERE conlang_id=" . $conlang_id);
+    $editorsList = array();
+    while($editor = $editors->fetch_assoc()) {
+      $editorsList[] = $editor["user_id"];
+    }
+    return in_array($_SESSION["uid"], $editorsList);
   }
-  return in_array($_SESSION["uid"], $editorsList);
 }
 
 if(isset($_REQUEST["test"])) {
@@ -218,9 +220,13 @@ if(isset($_POST["request"])) {
               <th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family:" . $language["script_id"] . "\"><b>" . $word["name"] . "</b></a></th>
               <th>" . $word["name_romanised"] . "</th>
               <th>" . $pos . "</th>
-              <th>" . $english . "</th>
-              <th style=\"width: auto; display: flex;\"><a href=\"wordedit.php?w=" . $word["id"] . "\">Edit</a><a onclick=\"deleteWord()\">Delete</a></th>
-            </tr>";
+              <th>" . $english . "</th>";
+
+      if(checkUserPerms($conn, $language["id"])) {
+        print "<th style=\"width: auto; display: flex;\"><a href=\"wordedit.php?w=" . $word["id"] . "\">Edit</a><a onclick=\"deleteWord()\" name=" . $word["id"] . ">Delete</a></th>";
+      }
+
+      print "</tr>";
     }
   }
 
@@ -268,8 +274,11 @@ if(isset($_POST["request"])) {
     echo checkUserPerms($conn, $_POST["conlang_id"]);
   }
 
+  //need user creating &  name of language
   if($_POST["request"] == "addLanguage") {
-
+    $conn->query("INSERT INTO conlangs");
+    $id = $conn->insert_id;
+    $conn->query("INSERT INTO editors (user_id, conlang_id) VALUES (" . $_SESSION["uid"] . ", " . $id . ")");
   }
 
   if($_POST["request"] == "deleteLanguage") {
