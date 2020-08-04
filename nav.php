@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php
-include "setup.php";
-
-function checkUserPerms($conn, $conlang_id) {
-  $editors = $conn->query("SELECT * from editors WHERE conlang_id=" . $conlang_id);
-  $editorsList = array();
-  while($editor = $editors->fetch_assoc()) {
-    $editorsList[] = $editor["user_id"];
-  }
-  return in_array($_SESSION["uid"], $editorsList);
-}
+include "processor.php";
 ?>
 <head>
   <title>LANGFORGE</title>

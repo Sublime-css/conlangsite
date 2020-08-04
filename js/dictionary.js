@@ -30,6 +30,7 @@ function deleteWord() {
       .then(function(result) {
         gparent = firer.parentElement.parentElement;
         gparent.remove();
+        console.log(result);
       });
   }
 }

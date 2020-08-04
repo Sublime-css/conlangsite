@@ -66,7 +66,7 @@ if(!(checkUserPerms($conn, $conlang["id"]))) {
           <div class="span">
             <div class="spand" style="width: 150%;">
               <label for="name"><p>Word in LANGUAGE</p></label>
-              <input name="name" type="text" value="<?php print $word["name"]; ?>" style="font-family: <?php print $conlang['script'];?>;" onfocusout="save()"/>
+              <input name="name" type="text" value="<?php print $word["name"]; ?>" style="font-family: <?php print "f" . $conlang['script_id'];?>;" onfocusout="save()"/>
               <label for="pronunciation"><p>Pronunciation (IPA)</p></label>
               <input name="pronunciation" type="text" value="<?php print $word["pronunciation"]; ?>"  onfocusout="save()"/>
             </div>
