@@ -46,7 +46,7 @@ $conlang = $conlangs->fetch_assoc();
       </div>
       <div class="section">
         <div class="span">
-          <h1 style="font-family: <?php print $conlang['script']; ?>"><?php print $word['name'];?></h1>
+          <h1 style="font-family: <?php print "f" . $conlang['script_id']; ?>"><?php print $word['name'];?></h1>
           <div style="width: 100%;"></div> <!-- this is literally just to space edit/delete from the word -->
           <?php if(checkUserPerms($conn, $conlang["id"])) { ?>
           <a href="wordedit.php?w=<?php print $_GET["w"]?>">edit</a>

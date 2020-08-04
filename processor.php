@@ -191,7 +191,7 @@ if(isset($_POST["request"])) {
 
 
       print "<tr>
-              <th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: " . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>
+              <th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: f" . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>
               <th>" . $language["name_romanised"] . "</th>
               <th>" . $editorsList . "</th>
             </tr>";
@@ -217,7 +217,7 @@ if(isset($_POST["request"])) {
       $english = join(", ", $english);
 
       print "<tr>
-              <th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family:" . $language["script_id"] . "\"><b>" . $word["name"] . "</b></a></th>
+              <th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family: f" . $language["script_id"] . "\"><b>" . $word["name"] . "</b></a></th>
               <th>" . $word["name_romanised"] . "</th>
               <th>" . $pos . "</th>
               <th>" . $english . "</th>";
