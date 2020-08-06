@@ -188,13 +188,18 @@ if(isset($_POST["request"])) {
       while ($editor = $editors->fetch_assoc()) { $editorsList[] = $editor["name"]; }
       $editorsList = join(", ", $editorsList);
 
+      print "<tr>";
 
+      //if conlang has script associated with it use it
+      if($language["script_id"] != "") {
+        print "<th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: f" . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>";
+      } else {
+        print "<th><a  href=\"dictionary.php?l=" . $language["id"] . "\"><b>" . $language["name"] . "</b></a></th>";
+      }
 
-      print "<tr>
-              <th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: f" . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>
-              <th>" . $language["name_romanised"] . "</th>
-              <th>" . $editorsList . "</th>
-            </tr>";
+      print "<th>" . $language["name_romanised"] . "</th>
+             <th>" . $editorsList . "</th>
+             </tr>";
     }
   }
 
@@ -216,11 +221,19 @@ if(isset($_POST["request"])) {
       $pos = join(", ", $pos);
       $english = join(", ", $english);
 
-      print "<tr>
-              <th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family: f" . $language["script_id"] . "\"><b>" . $word["name"] . "</b></a></th>
-              <th>" . $word["name_romanised"] . "</th>
-              <th>" . $pos . "</th>
-              <th>" . $english . "</th>";
+      print "<tr>";
+
+      //if conlang has script associated with it use it
+      if($language["script_id"] != "") {
+        print "<th><a  href=\"word.php?w=" . $word["id"] . "\" style=\"font-family: f" . $language["script_id"] . "\"><b>" . $word["name"] . "</b></a></th>";
+      } else {
+        print "<th><a  href=\"word.php?w=" . $word["id"] . "\"><b>" . $word["name"] . "</b></a></th>";
+      }
+
+      print "<th>" . $word["name_romanised"] . "</th>
+            <th>" . $pos . "</th>
+            <th>" . $english . "</th>";
+
 
       if(checkUserPerms($conn, $language["id"])) {
         print "<th style=\"width: auto; display: flex;\"><a href=\"wordedit.php?w=" . $word["id"] . "\">Edit</a><a onclick=\"deleteWord()\" name=" . $word["id"] . ">Delete</a></th>";

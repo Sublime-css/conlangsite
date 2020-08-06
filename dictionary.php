@@ -36,7 +36,9 @@ $_SESSION["l"] = $_GET["l"];
           ?>
         </b>
           <?php
-          print "<a style=\"float: right;\" href=\"wordedit.php?l=" . $conlang['id'] . "\">Add Word</a>";
+          if(checkUserPerms($conn, $conlang["id"])) {
+            print "<a style=\"float: right;\" href=\"wordedit.php?l=" . $conlang['id'] . "\">Add Word</a>";
+          }
           ?>
       </div>
 
