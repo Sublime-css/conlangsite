@@ -156,24 +156,24 @@ if(isset($_POST["request"])) {
   }
 
   //fontUpload()
-  if($_POST["request"] == "fontUpload") {
+  if($_POST["request"] == "addScript") {
     $dir = "scripts/";
 
     //file checks
-    if (getFileType($target) != "ttf") {
+    echo getFileType($_FILES["script"]);
+    if (getFileType($_FILES["script"]) != "ttf") {
       echo "Not a .ttf file.";
     } elseif ($_FILES["script"]["size"] > 5000000) { //not allowing files over 5MB this may be very large check later
       echo "This file is too large.";
     } else {
       echo "Uploading";
 
-      $conn->query("INSERT INTO scripts (name, editors) VALUES (" . $_POST["name"] . ", " . $_POST["editors"] . ")");
+      $conn->query("INSERT INTO scripts (name, editors) VALUES (" . $_POST["name"] . ", " . $_SESSION["uid"] . ")");
       $id = $conn->insert_id;
-      $target = $dir . $id;
       if (file_exists($target)) {
         echo "DATABASE ERROR, ID NOT SET PROPERLY";
       } else {
-        move_uploaded_file($_FILES["script"], $target);
+        move_uploaded_file($_FILES["script"], $dir);
       }
     }
   }
