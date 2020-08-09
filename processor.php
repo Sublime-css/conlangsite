@@ -276,6 +276,8 @@ if(isset($_POST["request"])) {
 
   if($_POST["request"] == "destroyUser") {
     unset($_SESSION["uname"]);
+    unset($_SESSION["uid"]);
+    header("Refresh:0");
   }
 
   if($_POST["request"] == "getUID") {

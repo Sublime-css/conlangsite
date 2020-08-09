@@ -70,7 +70,7 @@ function addUser() {
 }
 
 //user logout
-function destoryUser() {
+function destroyUser() {
   request({
     method: "POST",
     url: "processor.php",

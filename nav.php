@@ -15,7 +15,11 @@ include "processor.php";
   <div class="nav">
     <div class="overlay">
       <div class="login span margins">
-          <a onclick="signup()">SIGN UP</a> | <a onclick="login()">LOG IN</a>
+        <ul><?php if(isset($_SESSION["uid"])) { ?>
+          <a onclick="destroyUser()">LOG OUT</a> | <?php print "Logged in as " . $_SESSION["uname"] ?>
+        <?php } else { ?>
+          <a href="usermenu.php?q=1">SIGN UP</a> | <a href="usermenu.php?q=0">LOG IN</a>
+        <?php } ?></ul>
       </div>
       <div class="header span margins" style="">
         <h1 style="padding-right: 10px;"><?php ?></h1>
@@ -40,9 +44,9 @@ include "processor.php";
             </button>
           </form>
         </div>
-        <svg viewBox="0 0 300 30" style="width: 300px;">
+        <!-- <svg viewBox="0 0 300 30" style="width: 300px;">
           <image href="images/langforge.svg">LANGFORGE</image>
-        </svg>
+        </svg> -->
       </div>
 
       <div class="menu span margins tabbed">
