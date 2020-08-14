@@ -37,7 +37,7 @@ include "processor.php";
                 Searching Languages
               </option>
             </select>
-            <button>
+            <button type="button" onclick="search()">
               <svg>
                 <image href="images/magnifyingGlass.svg">Submit</image>
               </svg>

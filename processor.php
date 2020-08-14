@@ -198,8 +198,14 @@ if(isset($_POST["request"])) {
       }
 
       print "<th>" . $language["name_romanised"] . "</th>
-             <th>" . $editorsList . "</th>
-             </tr>";
+             <th>" . $editorsList . "</th>";
+
+     if(checkUserPerms($conn, $language["id"])) {
+       print "<th style=\"width: auto; display: flex;\"><a href=\"languageedit.php?l=" . $language["id"] . "\">Edit</a></th>";
+     } else {
+       print "<th style=\"width: auto; display: flex; opacity: 0;\">Edit</th>";
+     }
+      print "</tr>";
     }
   }
 
@@ -291,17 +297,24 @@ if(isset($_POST["request"])) {
 
   //need user creating &  name of language
   if($_POST["request"] == "addLanguage") {
-    $conn->query("INSERT INTO conlangs");
+    $conn->query("INSERT INTO conlangs (name, name_romanised, pronunciation) VALUES ('" . $_POST["name"] . "', '" . $_POST["name_romanised"] . "', '" . $_POST["pronunciation"] . "')");
     $id = $conn->insert_id;
+    echo "{ \"id\":" . $id . " }";
     $conn->query("INSERT INTO editors (user_id, conlang_id) VALUES (" . $_SESSION["uid"] . ", " . $id . ")");
+
   }
 
-  if($_POST["request"] == "deleteLanguage") {
-
+  if($_POST["request"] == "deleteLanguage") { //actually don't use this
+    //okay so this is complicated because we have to delete all the children first, meanings -> words -> editors (do this last incase anything goes wrong) -> conlangs
+    $conn->query("DELETE FROM meanings INNER JOIN words ON meanings.word_id=words.id WHERE conlang_id= ". $_POST["l"]);
+    $conn->query("DELETE FROM words WHERE conlang_id= ". $_POST["l"]);
+    $conn->query("DELETE FROM editors WHERE conlang_id= ". $_POST["l"]);
+    $conn->query("DELETE FROM conlangs WHERE id= ". $_POST["l"]);
   }
 
   if($_POST["request"] == "updateLanguage") {
-
+    $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["l"]);
+    echo "Updated meaning at id \"" . $_POST["l"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
   }
 
 }
