@@ -1,6 +1,8 @@
 <?php
 include 'setup.php';
 
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 function getFileType($file) {
   return strtolower(pathinfo($file,PATHINFO_EXTENSION));
 }
@@ -210,7 +212,7 @@ if(isset($_POST["request"])) {
   }
 
   if($_POST["request"] == "getWords") {
-    $words = $conn->query("SELECT * FROM words WHERE conlang_id=" . $_POST["l"] . " LIMIT " . $_POST["offset"] . ", " . $_POST["limit"]);
+    $words = $conn->query("SELECT * FROM words WHERE conlang_id=" . $_POST["l"] . "  ORDER BY name ASC LIMIT " . $_POST["offset"] . ", " . $_POST["limit"]);
     $languages = $conn->query("SELECT * FROM conlangs WHERE id=" . $_POST["l"]);
     $language = $languages->fetch_assoc();
 
@@ -224,6 +226,7 @@ if(isset($_POST["request"])) {
         if ($meaning["pos"] != "") { $pos[] = $meaning["pos"]; }
         if ($meaning["english"] != "") { $english[] = $meaning["english"]; }
       }
+      $pos = array_unique($pos);
       $pos = join(", ", $pos);
       $english = join(", ", $english);
 
@@ -270,14 +273,18 @@ if(isset($_POST["request"])) {
     $users = $stmt->get_result();
     $user = $users->fetch_assoc();
 
+    $out = new \stdClass();
+    $out->success = password_verify(trim($_POST["pwd"]), $user["pwd"]);
     if(password_verify(trim($_POST["pwd"]), $user["pwd"])) {
       $_SESSION["uname"] = $user["name"];
       $_SESSION["uid"] = $user["id"];
-      echo "Logged in as " . $_SESSION["uname"];
-      echo " " . $_SESSION["uid"];
+      $out->redirect = "index.php";
     } else {
-      echo "Failed";
+      $out->error = "Wrong Username or Password";
     }
+
+    $out = json_encode($out);
+    echo $out;
   }
 
   if($_POST["request"] == "destroyUser") {
@@ -316,7 +323,6 @@ if(isset($_POST["request"])) {
     $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["l"]);
     echo "Updated meaning at id \"" . $_POST["l"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
   }
-
 }
 
 

@@ -35,4 +35,13 @@ function deleteWord() {
   }
 }
 
-getWords(0, 50);
+wordDisplayLimit = 50;
+getWords(0, wordDisplayLimit);
+wordsLoaded = wordDisplayLimit;
+
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        getWords(wordsLoaded, wordDisplayLimit);
+        wordsLoaded = wordDisplayLimit + wordsLoaded;
+    }
+};

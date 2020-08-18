@@ -25,8 +25,8 @@ include "processor.php";
         <h1 style="padding-right: 10px;"><?php ?></h1>
         <div class="search">
           <form class="span">
-            <input type="text" name="search" />
-            <select name="searchType">
+            <input id="search" type="text" name="search" />
+            <select id="searchType" name="searchType">
               <option value="conlang">
                 Searching Conlang Words
               </option>
@@ -37,7 +37,7 @@ include "processor.php";
                 Searching Languages
               </option>
             </select>
-            <button type="button" onclick="search()">
+            <button type="button" onclick="searching()">
               <svg>
                 <image href="images/magnifyingGlass.svg">Submit</image>
               </svg>

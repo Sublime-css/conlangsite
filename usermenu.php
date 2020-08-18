@@ -2,6 +2,19 @@
 <head>
   <script src="js/main.js"></script>
   <?php include "nav.php" ?>
+  <style>
+  @keyframes errorUser {
+    from {opacity: 0;}
+    to {opacity: 0.5;}
+  }
+
+  #feedback {
+    animation-name: errorUser;
+    color: red;
+
+  }
+
+  </style>
 </head>
 <body>
   <div class="page">
@@ -23,6 +36,8 @@
       <?php } else { ?>
       <a onclick="checkUser()">Log in</a>
       <?php } ?>
+      <p id="feedback">
+      </p>
     </div>
   </div>
 </body>

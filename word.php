@@ -66,8 +66,12 @@ $conlang = $conlangs->fetch_assoc();
             print "<h3>" . $class . "</h3>";
 
             $count = 0;
+            $englishList = array();
             while($meaning = $meanings->fetch_assoc()) {
               $count++;
+
+              $englishList[] = $meaning["english"];
+
               print "
               <ul class=\"spand\">
                 <div class=\"meaning\">" . $count . ". <span class=\"highlight\">" . $meaning["english"] . "</span>";
@@ -93,23 +97,33 @@ $conlang = $conlangs->fetch_assoc();
 
       </div>
       <div class="section">
-        <h2>Related Words</h2>
+        <h2 >Synonyms</h2>
         <ul>
-          other words
-        </ul>
-        <h2>Synonyms</h2>
-        <ul>
-          egg
+          <?php
+          $englishListFormatted = join("\" OR english=\"", $englishList);
+          $englishListFormatted = "english=\"" . $englishListFormatted . "\"";
+          $otherWords = $conn->query("SELECT * FROM meanings LEFT JOIN words ON meanings.word_id=words.id WHERE conlang_id=" . $word["conlang_id"] . " AND " . $englishListFormatted . "AND NOT word_id=" . $word["id"]);
+          if($otherWords->num_rows > 0) {
+            while($otherWord = $otherWords->fetch_assoc()) {
+              print("<a href=\"word.php?w={$otherWord["id"]}\" style=\"font-family: f{$conlang["script_id"]}\">{$otherWord["name"]}</a><br />");
+            }
+          } else {
+            print("None");
+          }
+          ?>
         </ul>
         <h2>Homophones</h2>
         <ul>
-          egg
-        </ul>
-      </div>
-      <div class="section">
-        <h2>Etymology</h2>
-        <ul>
-          egg
+          <?php
+          $otherWords = $conn->query("SELECT * FROM words WHERE pronunciation=\"{$word["pronunciation"]}\" AND NOT id={$word["id"]}");
+          if($otherWords->num_rows > 0) {
+            while($otherWord = $otherWords->fetch_assoc()) {
+              print("<a href=\"word.php?w={$otherWord["id"]}\" style=\"font-family: f{$conlang["script_id"]}\">{$otherWord["name"]}</a><br />");
+            }
+          } else {
+            print("None");
+          }
+          ?>
         </ul>
       </div>
     </div>

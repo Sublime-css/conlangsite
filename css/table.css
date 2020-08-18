@@ -4,7 +4,11 @@ tr {
   align-items: stretch;
   border-style: none none solid none;
   border-width: 2px;
-  border-color: #3C99DC;
+  border-color: rgba(60, 153, 220, 0.5);
+}
+
+tr:hover {
+  border-color: rgba(60, 153, 220, 1);
 }
 
 th {

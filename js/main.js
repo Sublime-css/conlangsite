@@ -78,6 +78,9 @@ function destroyUser() {
       request: "destroyUser"
     }
   })
+    .then(function(result) {
+      location.replace(location);
+    });
 }
 
 //user login
@@ -95,7 +98,13 @@ function checkUser() {
     }
   })
     .then(function(result) {
+      result = JSON.parse(result);
       console.log(result);
+      if(result.success) {
+        location.replace(result.redirect);
+      } else {
+        document.getElementById("feedback").innerText = result.error;
+      }
     });
 }
 
@@ -126,4 +135,11 @@ function checkUserPerms(conlang_id) {
     .then(function(result) {
       console.log(result);
     });
+}
+
+function searching() {
+  search = document.getElementById("search");
+  searchType = document.getElementById("searchType");
+
+  location.search = "q=" + search.value + "&t=" + searchType.value;
 }
