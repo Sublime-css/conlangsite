@@ -16,3 +16,14 @@ function getLanguage(offset, limit) {
 }
 
 getLanguage(0, 50);
+
+conlangDisplayLimit = 50;
+getLanguage(0, conlangDisplayLimit);
+conlangsLoaded = conlangDisplayLimit;
+
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        getLanguage(conlangsLoaded, conlangDisplayLimit);
+        conlangsLoaded = conlangDisplayLimit + conlangsLoaded;
+    }
+};
