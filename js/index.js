@@ -15,8 +15,6 @@ function getLanguage(offset, limit) {
     });
 }
 
-getLanguage(0, 50);
-
 conlangDisplayLimit = 50;
 getLanguage(0, conlangDisplayLimit);
 conlangsLoaded = conlangDisplayLimit;

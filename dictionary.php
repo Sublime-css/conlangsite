@@ -43,7 +43,25 @@ $_SESSION["l"] = $_GET["l"];
       </div>
 
       <table id="table">
-
+        <tr class="tableHeading">
+          <th>
+            Name
+          </th>
+          <th>
+            Romanisation
+          </th>
+          <th>
+            Word Class
+          </th>
+          <th>
+            Meaning
+          </th>
+          <?php
+          if(isset($_SESSION["uid"])) {
+            print "<th style=\"width: auto; display: flex; opacity: 0;\"><a>Edit</a><a>Delete</a></th>";
+          }
+          ?>
+        </tr>
       </table>
     </div>
   </div>

@@ -18,6 +18,20 @@ include "nav.php";
         ?>
       </div>
       <table id="table">
+        <tr class="tableHeading">
+          <th>
+            Name
+          </th>
+          <th>
+            Romanisation
+          </th>
+          <th>
+            Editors
+          </th>
+          <th style="width: auto; display: flex; opacity: 0;">
+            <a>Edit</a>
+          </th>
+        </tr>
       </table>
     </div>
   </div>
