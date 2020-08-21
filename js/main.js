@@ -26,8 +26,8 @@ function request(options) { //does ajax requests example of request below functi
       }).join('&')
     }
     xhr.send(params);
-    console.log("Executed AJAX request with options:");
-    console.log(options);
+    //console.log("Executed AJAX request with options:");
+    //console.log(options);
   });
 }
 
@@ -135,11 +135,4 @@ function checkUserPerms(conlang_id) {
     .then(function(result) {
       console.log(result);
     });
-}
-
-function searching() {
-  search = document.getElementById("search");
-  searchType = document.getElementById("searchType");
-
-  location.search = "q=" + search.value + "&t=" + searchType.value;
 }

@@ -5,7 +5,9 @@ function getLanguage(offset, limit) {
     params: {
       request: "getLanguages",
       offset: offset,
-      limit: limit
+      limit: limit,
+      searchField: document.getElementById("searchType").value,
+      search: document.getElementById("search").value
     }
   })
     .then(function(result) {
@@ -25,3 +27,10 @@ window.onscroll = function(ev) {
         conlangsLoaded = conlangDisplayLimit + conlangsLoaded;
     }
 };
+
+function searching() {
+  document.getElementById("table").innerHTML = "";
+  getLanguage(0, conlangDisplayLimit);
+  conlangsLoaded = conlangDisplayLimit;
+  return false;
+}

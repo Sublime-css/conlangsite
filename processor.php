@@ -88,7 +88,7 @@ if(isset($_POST["request"])) {
 
   //getMeanings()
   if($_POST["request"] == "getMeanings") {
-    $meanings = $conn->query("SELECT * FROM meanings WHERE word_id=" . $_POST["w"]);
+    $meanings = $conn->query("SELECT * FROM meanings WHERE word_id={$_POST["w"]}");
     $pos = array("noun", "verb");
 
     $count = 0;
@@ -181,7 +181,7 @@ if(isset($_POST["request"])) {
   }
 
   if($_POST["request"] == "getLanguages") {
-    $languages = $conn->query("SELECT * FROM conlangs LIMIT " . $_POST["offset"] . ", " . $_POST["limit"]);
+    $languages = $conn->query("SELECT * FROM conlangs WHERE name LIKE \"%{$_POST["search"]}%\" OR name_romanised LIKE \"%{$_POST["search"]}%\" LIMIT {$_POST["offset"]},{$_POST["limit"]}");
 
     // output data of each row
     while($language = $languages->fetch_assoc()) {
@@ -212,7 +212,11 @@ if(isset($_POST["request"])) {
   }
 
   if($_POST["request"] == "getWords") {
-    $words = $conn->query("SELECT * FROM words WHERE conlang_id=" . $_POST["l"] . "  ORDER BY name ASC LIMIT " . $_POST["offset"] . ", " . $_POST["limit"]);
+    if ($_POST["searchField"] == "english") {
+      $words = $conn->query("SELECT * FROM words LEFT JOIN meanings ON words.id=meanings.word_id WHERE conlang_id={$_POST["l"]} AND {$_POST["searchField"]} LIKE \"%{$_POST["search"]}%\" ORDER BY words.name ASC LIMIT {$_POST["offset"]},{$_POST["limit"]}");
+    } else {
+      $words = $conn->query("SELECT * FROM words WHERE conlang_id={$_POST["l"]} AND {$_POST["searchField"]} LIKE \"%{$_POST["search"]}%\" ORDER BY name ASC LIMIT {$_POST["offset"]},{$_POST["limit"]}");
+    }
     $languages = $conn->query("SELECT * FROM conlangs WHERE id=" . $_POST["l"]);
     $language = $languages->fetch_assoc();
 

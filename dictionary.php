@@ -40,12 +40,12 @@ $_SESSION["l"] = $_GET["l"];
             print "<a style=\"float: right;\" href=\"wordedit.php?l=" . $conlang['id'] . "\">Add Word</a>";
           }
           ?>
+          <script>script = "f<?php print $conlang["script_id"] ?>"</script>
       </div>
-
-      <table id="table">
+      <table>
         <tr class="tableHeading">
           <th>
-            Name
+            Word
           </th>
           <th>
             Romanisation
@@ -62,6 +62,9 @@ $_SESSION["l"] = $_GET["l"];
           }
           ?>
         </tr>
+      </table>
+      <table id="table">
+
       </table>
     </div>
   </div>

@@ -7,6 +7,8 @@ function getWords(offset, limit) {
       offset: offset,
       limit: limit,
       l: params.get("l"),
+      searchField: document.getElementById("searchType").value,
+      search: document.getElementById("search").value
     }
   })
     .then(function(result) {
@@ -39,9 +41,28 @@ wordDisplayLimit = 50;
 getWords(0, wordDisplayLimit);
 wordsLoaded = wordDisplayLimit;
 
+function searching() {
+  document.getElementById("table").innerHTML = "";
+  getWords(0, wordDisplayLimit);
+  wordsLoaded = wordDisplayLimit;
+  return false;
+}
+
 window.onscroll = function(ev) {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         getWords(wordsLoaded, wordDisplayLimit);
         wordsLoaded = wordDisplayLimit + wordsLoaded;
     }
+};
+
+function updateSearchScript() {
+  if (document.getElementById("searchType").value == "name") {
+    document.getElementById("search").style = `font-family: ${script};`;
+  } else {
+    document.getElementById("search").style = "";
+  }
+}
+
+window.onload = function() {
+  updateSearchScript();
 };

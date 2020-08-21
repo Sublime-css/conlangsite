@@ -24,20 +24,23 @@ include "processor.php";
       <div class="header span margins" style="">
         <h1 style="padding-right: 10px;"><?php ?></h1>
         <div class="search">
-          <form class="span">
+          <form class="span" onsubmit="return searching()">
             <input id="search" type="text" name="search" />
-            <select id="searchType" name="searchType">
-              <option value="conlang">
-                Searching Conlang Words
+            <select id="searchType" name="searchType" onchange="updateSearchScript()">
+              <option value="name">
+                Searching by Word
+              </option>
+              <option value="name_romanised">
+                Searching by Romanisation
               </option>
               <option value="english">
-                Searching English Words
+                Searching by Meaning
               </option>
-              <option value="languages">
-                Searching Languages
+              <option value="name">
+                Searching by Language
               </option>
             </select>
-            <button type="button" onclick="searching()">
+            <button type="submit">
               <svg>
                 <image href="images/magnifyingGlass.svg">Submit</image>
               </svg>
