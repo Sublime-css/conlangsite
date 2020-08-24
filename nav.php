@@ -7,7 +7,6 @@ include "processor.php";
   <title>LANGFORGE</title>
   <link rel="stylesheet" href="css/grid.css">
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/fonts.css">
   <script src="js/main.js"></script>
 </head>
 

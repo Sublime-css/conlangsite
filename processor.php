@@ -1,7 +1,7 @@
 <?php
 include 'setup.php';
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+//error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 function getFileType($file) {
   return strtolower(pathinfo($file,PATHINFO_EXTENSION));
@@ -157,58 +157,44 @@ if(isset($_POST["request"])) {
     echo "dictionary.php?l=" . $word["conlang_id"];
   }
 
-  //fontUpload()
-  if($_POST["request"] == "addScript") {
-    $dir = "scripts/";
-
-    //file checks
-    echo getFileType($_FILES["script"]);
-    if (getFileType($_FILES["script"]) != "ttf") {
-      echo "Not a .ttf file.";
-    } elseif ($_FILES["script"]["size"] > 5000000) { //not allowing files over 5MB this may be very large check later
-      echo "This file is too large.";
-    } else {
-      echo "Uploading";
-
-      $conn->query("INSERT INTO scripts (name, editors) VALUES (" . $_POST["name"] . ", " . $_SESSION["uid"] . ")");
-      $id = $conn->insert_id;
-      if (file_exists($target)) {
-        echo "DATABASE ERROR, ID NOT SET PROPERLY";
-      } else {
-        move_uploaded_file($_FILES["script"], $dir);
-      }
-    }
-  }
-
   if($_POST["request"] == "getLanguages") {
     $languages = $conn->query("SELECT * FROM conlangs WHERE name LIKE \"%{$_POST["search"]}%\" OR name_romanised LIKE \"%{$_POST["search"]}%\" LIMIT {$_POST["offset"]},{$_POST["limit"]}");
 
     // output data of each row
+    $out = new \stdClass(); //encoded into JSON object so client can get HTML and scripts (fonts) to load
+    $out->HTML = "";
+    $out->scripts = array();
     while($language = $languages->fetch_assoc()) {
+
       $editorsList = array(); //List of editors for the front end table
       $editors = $conn->query("SELECT editors.conlang_id, users.name FROM editors LEFT JOIN users ON editors.user_id=users.id WHERE conlang_id=" . $language["id"]);
       while ($editor = $editors->fetch_assoc()) { $editorsList[] = $editor["name"]; }
       $editorsList = join(", ", $editorsList);
 
-      print "<tr>";
+      $HTML = "<tr>";
 
       //if conlang has script associated with it use it
       if($language["script_id"] != "") {
-        print "<th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: f" . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>";
+        $HTML = $HTML . "<th><a  href=\"dictionary.php?l=" . $language["id"] . "\" style=\"font-family: f" . $language["script_id"] . ";\"><b>" . $language["name"] . "</b></a></th>";
+        $out->scripts[] = $language["script_id"];
       } else {
-        print "<th><a  href=\"dictionary.php?l=" . $language["id"] . "\"><b>" . $language["name"] . "</b></a></th>";
+        $HTML = $HTML . "<th><a  href=\"dictionary.php?l=" . $language["id"] . "\"><b>" . $language["name"] . "</b></a></th>";
       }
 
-      print "<th>" . $language["name_romanised"] . "</th>
+      $HTML = $HTML . "<th>" . $language["name_romanised"] . "</th>
              <th>" . $editorsList . "</th>";
 
      if(checkUserPerms($conn, $language["id"])) {
-       print "<th style=\"width: auto; display: flex;\"><a href=\"languageedit.php?l=" . $language["id"] . "\">Edit</a></th>";
+       $HTML = $HTML . "<th style=\"width: auto; display: flex;\"><a href=\"languageedit.php?l=" . $language["id"] . "\">Edit</a></th>";
      } else {
-       print "<th style=\"width: auto; display: flex; opacity: 0;\">Edit</th>";
+       $HTML = $HTML . "<th style=\"width: auto; display: flex; opacity: 0;\">Edit</th>";
      }
-      print "</tr>";
+     $HTML = $HTML . "</tr>";
+     $out->HTML = $out->HTML . $HTML;
     }
+
+    print json_encode($out);
+
   }
 
   if($_POST["request"] == "getWords") {
@@ -315,7 +301,7 @@ if(isset($_POST["request"])) {
 
   }
 
-  if($_POST["request"] == "deleteLanguage") { //actually don't use this
+  if($_POST["request"] == "deleteLanguage") {
     //okay so this is complicated because we have to delete all the children first, meanings -> words -> editors (do this last incase anything goes wrong) -> conlangs
     $conn->query("DELETE FROM meanings INNER JOIN words ON meanings.word_id=words.id WHERE conlang_id= ". $_POST["l"]);
     $conn->query("DELETE FROM words WHERE conlang_id= ". $_POST["l"]);
@@ -324,9 +310,52 @@ if(isset($_POST["request"])) {
   }
 
   if($_POST["request"] == "updateLanguage") {
-    $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["l"]);
+    if($_POST["field"] == "script_id" and $_POST["value"] == "") {
+      $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = NULL WHERE id=" . $_POST["l"]);
+    } else {
+      $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["l"]);
+    }
+
     echo "Updated meaning at id \"" . $_POST["l"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
   }
+}
+
+if (isset($_FILES["files"])) { //FILES! UPDATE IF CHANGING ANYTHING ABOUT FILES ON WEBSITE
+  //print_r($_FILES);
+  $errors = [];
+  $path = "fonts/";
+  $fileTypes = ["ttf"]; //add other filetypes if support added
+  $fileType = strtolower(end(explode('.', $_FILES['files']['name'][0])));
+
+  //getting everything except the extension
+  $fileName = explode('.', $_FILES['files']['name'][0]);
+  unset($fileName[count($fileName)-1]);
+  $fileName = join("", $fileName);
+
+  if($_FILES["files"]["size"][0] > 2097152) { //2MB file size cause...
+    $errors[] = "Font is too large (>2MB)";
+  }
+  if(!in_array($fileType, $fileTypes)) {
+    $errors[] = "Font is not a .ttf file";
+  }
+  if(!isset($_SESSION["uid"])) {
+    $errors[] = "Only users can upload fonts! Try logging in.";
+  }
+  if($errors) {
+    print_r($errors);
+    die();
+  }
+
+  $conn->query("INSERT INTO scripts (name, user_id) VALUES (\"{$fileName}\", {$_SESSION["uid"]})");
+  $id = $conn->insert_id;
+
+  if($id == 0) { //make sure that if database error occur don't put in fonts/
+    $errors[] = "Database error, Try again later";
+    print_r($errors);
+    die();
+  }
+
+  move_uploaded_file($_FILES["files"]["tmp_name"][0], "{$path}{$id}.ttf");
 }
 
 

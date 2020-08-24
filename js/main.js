@@ -136,3 +136,9 @@ function checkUserPerms(conlang_id) {
       console.log(result);
     });
 }
+
+function loadScript(script_id) { //MUST BE CALLED WHEN SCRIPT IS USED
+  sheet = document.createElement("style");
+  sheet.innerHTML += `@font-face { font-family: "f${script_id}"; src: url("fonts/${script_id}.ttf"); }`
+  document.body.appendChild(sheet);
+}

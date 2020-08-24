@@ -32,6 +32,8 @@ $conlang = $conlangs->fetch_assoc();
             });
         }
       }
+
+      loadScript(<?php print $conlang["script_id"] ?>);
     </script>
     </head>
     <div class="wrapper">
@@ -70,7 +72,7 @@ $conlang = $conlangs->fetch_assoc();
             while($meaning = $meanings->fetch_assoc()) {
               $count++;
 
-              $englishList[] = $meaning["english"];
+              $englishList[] = $meaning["english"]; //for Synonyms
 
               print "
               <ul class=\"spand\">

@@ -7,7 +7,8 @@
   <div class="page">
     <div class="wrapper" class="spand">
       <p>Upload A Script</p>
-      <input id="script" type="file" name="script"/>
+      <input id="script_file" type="file" name="script"/>
+      <p id="feedback"></p>
     </div>
   </div>
 </body>

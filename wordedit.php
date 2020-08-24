@@ -86,4 +86,5 @@ if(!(checkUserPerms($conn, $conlang["id"]))) {
       </div>
     </div>
   </div>
+  <script>loadScript(<?php print $conlang["script_id"] ?>)</script>
 </body>

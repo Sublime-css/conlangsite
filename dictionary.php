@@ -33,6 +33,7 @@ $_SESSION["l"] = $_GET["l"];
             print $conlang['name_romanised'] . "'s Dictionary";
           }
 
+
           ?>
         </b>
           <?php
@@ -40,7 +41,9 @@ $_SESSION["l"] = $_GET["l"];
             print "<a style=\"float: right;\" href=\"wordedit.php?l=" . $conlang['id'] . "\">Add Word</a>";
           }
           ?>
-          <script>script = "f<?php print $conlang["script_id"] ?>"</script>
+          <script>script = "f<?php print $conlang["script_id"] ?>";
+          loadScript(<?php print $conlang["script_id"] ?>);
+          </script>
       </div>
       <table>
         <tr class="tableHeading">

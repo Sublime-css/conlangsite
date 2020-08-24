@@ -11,9 +11,13 @@ function getLanguage(offset, limit) {
     }
   })
     .then(function(result) {
+      console.log(result);
+      result = JSON.parse(result);
       table = document.getElementById("table");
-      table.insertAdjacentHTML("beforeend", result);
-
+      table.insertAdjacentHTML("beforeend", result.HTML);
+      for (i = 0; i < result.scripts.length; i++) {
+        loadScript(result.scripts[i]);
+      }
     });
 }
 
