@@ -17,6 +17,11 @@ th {
   padding: 10px;
 }
 
+td {
+  width: 100%;
+  padding: 10px;
+}
+
 table {
   width: 100%;
 }
@@ -28,4 +33,10 @@ a {
 
 .tableHeading {
   font-style: italic;
+}
+
+@media screen and (max-width: 800px) {
+  tr {
+    flex-wrap: wrap;
+  }
 }

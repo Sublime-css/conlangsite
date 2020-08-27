@@ -1,26 +1,5 @@
 //EPIC JAVASCRIPT FOR script.php affecting scripts
 
-/* THIS DOES NOT WORK NO FUCKING IDEA WHY
-function addScript() {
-  script = document.getElementById('script_file').files[0];
-  data = new FormData();
-  data.append('files[]', script);
-
-  request({
-    method: "POST",
-    url: "processor.php",
-    params: {
-      request: "addScript",
-      name: "Standard Galactic",
-      data: data
-    }
-  })
-    .then(function(result) {
-      console.log(result);
-    });
-}
-*/
-
 function addScript() {
   const files = document.getElementById("script_file").files;
   const formData = new FormData();
@@ -36,5 +15,43 @@ function addScript() {
   }).then((result) => {
     console.log(result);
     document.getElementById("feedback").innerText = result;
+    searching();
   })
+}
+
+function getScripts(offset, limit) {
+  request({
+    method: "POST",
+    url: "processor.php",
+    params: {
+      request: "getScripts",
+      offset: offset,
+      limit: limit,
+      searchField: document.getElementById("searchType").value,
+      search: document.getElementById("search").value
+    }
+  })
+    .then(function(result) {
+      console.log(result);
+      table = document.getElementById("table");
+      table.insertAdjacentHTML("beforeend", result);
+    });
+}
+
+scriptDisplayLimit = 50;
+getScripts(0, scriptDisplayLimit);
+scriptsLoaded = scriptDisplayLimit;
+
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        getScripts(scriptsLoaded, scriptDisplayLimit);
+        scriptsLoaded = scriptDisplayLimit + scriptsLoaded;
+    }
+};
+
+function searching() {
+  document.getElementById("table").innerHTML = "";
+  getLanguage(0, scriptDisplayLimit);
+  scriptsLoaded = scriptDisplayLimit;
+  return false;
 }

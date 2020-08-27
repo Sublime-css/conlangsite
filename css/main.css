@@ -240,3 +240,25 @@ input {
   border-color: white;
   border-width: thin;
 }
+
+@media screen and (max-width: 800px) {
+  .margins {
+    width: 95%;
+  }
+
+  .page {
+    width: 95%;
+  }
+
+  .menu {
+    flex-direction: column;
+  }
+
+  .search {
+    font-size: 1em;
+  }
+
+  .span {
+    flex-wrap: wrap;
+  }
+}

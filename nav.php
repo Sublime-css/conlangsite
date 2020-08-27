@@ -8,6 +8,7 @@ include "processor.php";
   <link rel="stylesheet" href="css/grid.css">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/main.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <body>
@@ -55,7 +56,7 @@ include "processor.php";
             <a id="dictionary" href="dictionary.php">DICTIONARY</a>
             <a id="phonology"  href="phonology.php">PHONOLOGY</a>
             <a id="script" href="script.php">SCRIPT</a>
-            <a id="index" href="index.php" style="text-align:right; border-style: none solid none solid;">LANGUAGES</a>
+            <a id="index" href="index.php" style="border-style: none solid none solid;">LANGUAGES</a>
       </div>
     </div>
   </div>

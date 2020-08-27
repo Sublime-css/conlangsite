@@ -229,9 +229,9 @@ if(isset($_POST["request"])) {
         print "<th><a  href=\"word.php?w=" . $word["id"] . "\"><b>" . $word["name"] . "</b></a></th>";
       }
 
-      print "<th>" . $word["name_romanised"] . "</th>
-            <th>" . $pos . "</th>
-            <th>" . $english . "</th>";
+      print "<td>" . $word["name_romanised"] . "</td>
+            <td>" . $pos . "</td>
+            <td>" . $english . "</td>";
 
 
       if(checkUserPerms($conn, $language["id"])) {
@@ -298,7 +298,6 @@ if(isset($_POST["request"])) {
     $id = $conn->insert_id;
     echo "{ \"id\":" . $id . " }";
     $conn->query("INSERT INTO editors (user_id, conlang_id) VALUES (" . $_SESSION["uid"] . ", " . $id . ")");
-
   }
 
   if($_POST["request"] == "deleteLanguage") {
@@ -318,6 +317,27 @@ if(isset($_POST["request"])) {
 
     echo "Updated meaning at id \"" . $_POST["l"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
   }
+
+  if($_POST["request"] == "getScripts") {
+    $scripts = $conn->query("SELECT scripts.id, scripts.name, users.name AS user FROM scripts LEFT JOIN users ON scripts.user_id=users.id WHERE scripts.{$_POST["searchField"]} LIKE \"%{$_POST["search"]}%\" LIMIT {$_POST["offset"]},{$_POST["limit"]}");
+    while($script = $scripts->fetch_assoc()) {
+      print "<tr>
+      <th>
+      {$script["id"]}
+      </th>
+      <td>
+      {$script["name"]}
+      </td>
+      <td>
+      {$script["user"]}
+      </td>
+      </tr>";
+    }
+  }
+
+  if($_POST["request"] == "saveScripts") {} //add in editing later if want
+
+  if($_POST["request"] == "deleteScripts") {}
 }
 
 if (isset($_FILES["files"])) { //FILES! UPDATE IF CHANGING ANYTHING ABOUT FILES ON WEBSITE
