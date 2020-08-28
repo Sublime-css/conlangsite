@@ -54,7 +54,7 @@ include "processor.php";
 
       <div class="menu span margins tabbed">
             <a id="dictionary" href="dictionary.php">DICTIONARY</a>
-            <a id="phonology"  href="phonology.php">PHONOLOGY</a>
+            <!-- <a id="phonology"  href="phonology.php">PHONOLOGY</a> -->
             <a id="script" href="script.php">SCRIPT</a>
             <a id="index" href="index.php" style="border-style: none solid none solid;">LANGUAGES</a>
       </div>

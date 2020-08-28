@@ -51,7 +51,7 @@ window.onscroll = function(ev) {
 
 function searching() {
   document.getElementById("table").innerHTML = "";
-  getLanguage(0, scriptDisplayLimit);
+  getScripts(0, scriptDisplayLimit);
   scriptsLoaded = scriptDisplayLimit;
   return false;
 }
