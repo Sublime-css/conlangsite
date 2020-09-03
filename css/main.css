@@ -10,13 +10,7 @@ body {
   height: 100%;
 }
 
-input {
-  outline: inherit;
-  border: inherit;
-  font-size: inherit;
-}
-
-select {
+input, select {
   outline: inherit;
   border: inherit;
   font-size: inherit;

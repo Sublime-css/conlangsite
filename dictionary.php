@@ -45,30 +45,32 @@ $_SESSION["l"] = $_GET["l"];
           loadScript(<?php print $conlang["script_id"] ?>);
           </script>
       </div>
-      <table>
-        <tr class="tableHeading">
-          <th>
-            Word
-          </th>
-          <th>
-            Romanisation
-          </th>
-          <th>
-            Word Class
-          </th>
-          <th>
-            Meaning
-          </th>
-          <?php
-          if(isset($_SESSION["uid"])) {
-            print "<th style=\"width: auto; display: flex; opacity: 0;\"><a>Edit</a><a>Delete</a></th>";
-          }
-          ?>
-        </tr>
-      </table>
-      <table id="table">
-
-      </table>
+        <table>
+          <tbody>
+            <tr class="tableHeading">
+              <th>
+                Word
+              </th>
+              <th>
+                Romanisation
+              </th>
+              <th>
+                Word Class
+              </th>
+              <th>
+                Meaning
+              </th>
+              <?php
+              if(isset($_SESSION["uid"])) {
+                print "<th style=\"width: auto; display: flex; opacity: 0;\"><a>Edit</a><a>Delete</a></th>";
+              }
+              ?>
+            </tr>
+          </tbody>
+          <tbody id="table">
+            <!-- hey javascript put the data in here -->
+          </tbody>
+        </table>
     </div>
   </div>
 </body>
