@@ -49,6 +49,7 @@ svg {
   padding: 5px;
   font-size: 1.125em;
   color: white;
+  box-sizing: border-box;
 }
 
 .menu a:hover {
@@ -246,6 +247,7 @@ input {
 
   .menu {
     flex-direction: column;
+    box-sizing: border-box;
   }
 
   .search {

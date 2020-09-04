@@ -37,53 +37,87 @@ if(isset($_REQUEST["test"])) {
 }
 
 if(isset($_POST["request"])) {
-
-  //saveMeaning()
-  if($_POST["request"] == "saveMeaning") {
-    $keys = array_keys($_POST);
-    $conn->query("UPDATE meanings SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["m"]);
-    echo "Updated meaning at id \"" . $_POST["m"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
+  if(isset($_POST["l"])) { //chk perms
+    $access = checkUserPerms($conn, $_POST["l"]);
+  } elseif (isset($_POST["w"])) {
+    $words = $conn->query("SELECT words.id, words.conlang_id FROM words WHERE words.id={$_POST["w"]}");
+    $word = $words->fetch_assoc();
+    $access = checkUserPerms($conn, $word["conlang_id"]);
+  } elseif (isset($_POST["m"])) {
+    $words = $conn->query("SELECT meanings.id, words.conlang_id FROM words LEFT JOIN meanings ON meanings.word_id=words.id WHERE meanings.id={$_POST["m"]}");
+    $word = $words->fetch_assoc();
+    $access = checkUserPerms($conn, $word["conlang_id"]);
   }
 
-  //addMeaning()
-  if($_POST["request"] == "addMeaning") {
-    $conn->query("INSERT INTO meanings (word_id) VALUES (" . $_POST["w"] . ")");
-    $id = $conn->insert_id;
-    $n = 2;
-    print '
-    <ul>
+  if(isset($access) AND $access) {
+    //addMeaning()
+    if($_POST["request"] == "addMeaning") {
+      $conn->query("INSERT INTO meanings (word_id) VALUES (" . $_POST["w"] . ")");
+      $id = $conn->insert_id;
+      $n = 2;
+      print '
+      <ul>
       <form method="post" id="' . $id . '">
-          <p>Meaning #' . $n . '</p> <a onclick="delMeaning()">Delete</a>
-          <label for="pos"><p>Part of Speech</p></label>
-          <select name="pos" onchange="saveMeaning()">
-            <option selected disabled hidden>
+      <p>Meaning #' . $n . '</p> <a onclick="delMeaning()">Delete</a>
+      <label for="pos"><p>Part of Speech</p></label>
+      <select name="pos" onchange="saveMeaning()">
+      <option selected disabled hidden>
 
-            </option>
-            <option value="noun">
-              noun
-            </option>
-            <option value="pronoun">
-              pronoun
-            </option>
-            <option value="verb">
-              verb
-            </option>
-            <option value="adjective">
-              adjective
-            </option>
-            <option value="numeral">
-              numeral
-            </option>
-          </select>
-          <label for="english"><p>English</p></label>
-          <input name="english" type="text" onfocusout="saveMeaning()"/>
-          <label for="meaning"><p>Additional Meaning</p></label>
-          <input name="meaning" type="text" onfocusout="saveMeaning()"/>
-          <label for="example"><p>Example of Meaning</p></label>
-          <textarea name="example" style="height: 8em;" onfocusout="saveMeaning()"></textarea>
+      </option>
+      <option value="noun">
+      noun
+      </option>
+      <option value="pronoun">
+      pronoun
+      </option>
+      <option value="verb">
+      verb
+      </option>
+      <option value="adjective">
+      adjective
+      </option>
+      <option value="numeral">
+      numeral
+      </option>
+      </select>
+      <label for="english"><p>English</p></label>
+      <input name="english" type="text" onfocusout="saveMeaning()"/>
+      <label for="meaning"><p>Additional Meaning</p></label>
+      <input name="meaning" type="text" onfocusout="saveMeaning()"/>
+      <label for="example"><p>Example of Meaning</p></label>
+      <textarea name="example" style="height: 8em;" onfocusout="saveMeaning()"></textarea>
       </form>
-    </ul>
-    ';
+      </ul>
+      ';
+    }
+
+    //saveMeaning()
+    if($_POST["request"] == "saveMeaning") {
+      $keys = array_keys($_POST);
+      $conn->query("UPDATE meanings SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["m"]);
+      echo "Updated meaning at id \"" . $_POST["m"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
+    }
+
+    //delMeaning()
+    if($_POST["request"] == "delMeaning") {
+      $conn->query("DELETE FROM meanings WHERE id=". $_POST["m"]);
+      echo "Deleted Meaning with ID " . $_POST["m"];
+    }
+
+    //save() TOP text
+    if($_POST["request"] == "save") {
+      $conn->query("UPDATE words SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["w"]);
+      echo "Updated meaning at id \"" . $_POST["w"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
+    }
+
+    //delete() word
+    if($_POST["request"] == "delete") {
+      $words = $conn->query("SELECT * FROM words WHERE id=" . $_POST["w"]);
+      $word = $words->fetch_assoc();
+      $conn->query("DELETE FROM meanings WHERE word_id=" . $_POST["w"]);
+      $conn->query("DELETE FROM words WHERE id=" . $_POST["w"]);
+      echo "dictionary.php?l=" . $word["conlang_id"];
+    }
   }
 
   //getMeanings()
@@ -134,27 +168,32 @@ if(isset($_POST["request"])) {
       </ul>
       ';
     }
-  }
 
-  //delMeaning()
-  if($_POST["request"] == "delMeaning") {
-    $conn->query("DELETE FROM meanings WHERE id=". $_POST["m"]);
-    echo "Deleted Meaning with ID " . $_POST["m"];
-  }
+    //need user creating &  name of language
+    if($_POST["request"] == "addLanguage") {
+      $conn->query("INSERT INTO conlangs (name, name_romanised, pronunciation) VALUES ('" . $_POST["name"] . "', '" . $_POST["name_romanised"] . "', '" . $_POST["pronunciation"] . "')");
+      $id = $conn->insert_id;
+      echo "{ \"id\":" . $id . " }";
+      $conn->query("INSERT INTO editors (user_id, conlang_id) VALUES (" . $_SESSION["uid"] . ", " . $id . ")");
+    }
 
-  //save() TOP text
-  if($_POST["request"] == "save") {
-    $conn->query("UPDATE words SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["w"]);
-    echo "Updated meaning at id \"" . $_POST["w"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
-  }
+    if($_POST["request"] == "deleteLanguage") {
+      //okay so this is complicated because we have to delete all the children first, meanings -> words -> editors (do this last incase anything goes wrong) -> conlangs
+      $conn->query("DELETE FROM meanings INNER JOIN words ON meanings.word_id=words.id WHERE conlang_id= ". $_POST["l"]);
+      $conn->query("DELETE FROM words WHERE conlang_id= ". $_POST["l"]);
+      $conn->query("DELETE FROM editors WHERE conlang_id= ". $_POST["l"]);
+      $conn->query("DELETE FROM conlangs WHERE id= ". $_POST["l"]);
+    }
 
-  //delete() word
-  if($_POST["request"] == "delete") {
-    $words = $conn->query("SELECT * FROM words WHERE id=" . $_POST["w"]);
-    $word = $words->fetch_assoc();
-    $conn->query("DELETE FROM meanings WHERE word_id=" . $_POST["w"]);
-    $conn->query("DELETE FROM words WHERE id=" . $_POST["w"]);
-    echo "dictionary.php?l=" . $word["conlang_id"];
+    if($_POST["request"] == "updateLanguage") {
+      if($_POST["field"] == "script_id" and $_POST["value"] == "") {
+        $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = NULL WHERE id=" . $_POST["l"]);
+      } else {
+        $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["l"]);
+      }
+
+      echo "Updated meaning at id \"" . $_POST["l"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
+    }
   }
 
   if($_POST["request"] == "getLanguages") {
@@ -292,31 +331,6 @@ if(isset($_POST["request"])) {
     echo checkUserPerms($conn, $_POST["conlang_id"]);
   }
 
-  //need user creating &  name of language
-  if($_POST["request"] == "addLanguage") {
-    $conn->query("INSERT INTO conlangs (name, name_romanised, pronunciation) VALUES ('" . $_POST["name"] . "', '" . $_POST["name_romanised"] . "', '" . $_POST["pronunciation"] . "')");
-    $id = $conn->insert_id;
-    echo "{ \"id\":" . $id . " }";
-    $conn->query("INSERT INTO editors (user_id, conlang_id) VALUES (" . $_SESSION["uid"] . ", " . $id . ")");
-  }
-
-  if($_POST["request"] == "deleteLanguage") {
-    //okay so this is complicated because we have to delete all the children first, meanings -> words -> editors (do this last incase anything goes wrong) -> conlangs
-    $conn->query("DELETE FROM meanings INNER JOIN words ON meanings.word_id=words.id WHERE conlang_id= ". $_POST["l"]);
-    $conn->query("DELETE FROM words WHERE conlang_id= ". $_POST["l"]);
-    $conn->query("DELETE FROM editors WHERE conlang_id= ". $_POST["l"]);
-    $conn->query("DELETE FROM conlangs WHERE id= ". $_POST["l"]);
-  }
-
-  if($_POST["request"] == "updateLanguage") {
-    if($_POST["field"] == "script_id" and $_POST["value"] == "") {
-      $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = NULL WHERE id=" . $_POST["l"]);
-    } else {
-      $conn->query("UPDATE conlangs SET " . $_POST["field"] . " = '" . $_POST["value"] . "' WHERE id=" . $_POST["l"]);
-    }
-
-    echo "Updated meaning at id \"" . $_POST["l"] . "\", field \"" . $_POST["field"] . "\" with \"" . $_POST["value"] . "\"";
-  }
 
   if($_POST["request"] == "getScripts") {
     $scripts = $conn->query("SELECT scripts.id, scripts.name, users.name AS user FROM scripts LEFT JOIN users ON scripts.user_id=users.id WHERE scripts.{$_POST["searchField"]} LIKE \"%{$_POST["search"]}%\" LIMIT {$_POST["offset"]},{$_POST["limit"]}");
