@@ -236,6 +236,15 @@ input {
   border-width: thin;
 }
 
+.help-text {
+  visibility: hidden;
+}
+
+.help-text:hover {
+  visibility: visible;
+  z-index: 1;
+}
+
 @media screen and (max-width: 800px) {
   .margins {
     width: 95%;

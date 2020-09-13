@@ -54,6 +54,10 @@ function addUser() {
   uname = document.getElementById("uname");
   pwd = document.getElementById("passw");
 
+  if (email.value == "" || uname.value == "" || pwd.value == "") {
+    return "no";
+  }
+
   request({
     method: "POST",
     url: "processor.php",

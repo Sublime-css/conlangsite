@@ -53,10 +53,13 @@ include "processor.php";
       </div>
 
       <div class="menu span margins tabbed">
+            <a id="info" href="landing.php">INFO</a>
             <a id="dictionary" href="dictionary.php">DICTIONARY</a>
             <!-- <a id="phonology"  href="phonology.php">PHONOLOGY</a> -->
+            <?php if(isset($_SESSION["uid"])) { ?>
             <a id="script" href="script.php">SCRIPT</a>
-            <a id="index" href="index.php" style="border-style: none solid none solid;">LANGUAGES</a>
+            <?php } ?>
+            <a id="languages" href="languages.php" style="border-style: none solid none solid;">LANGUAGES</a>
       </div>
     </div>
   </div>
