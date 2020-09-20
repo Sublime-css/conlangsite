@@ -22,7 +22,7 @@ include "processor.php";
         <?php } ?></ul>
       </div>
       <div class="header span margins" style="">
-        <h1 style="padding-right: 10px;"><?php ?></h1>
+        <!-- <h1 style="padding-right: 10px;"><?php ?></h1> -->
         <div class="search">
           <form class="span" onsubmit="return searching()">
             <input id="search" type="text" name="search" />
@@ -54,7 +54,9 @@ include "processor.php";
 
       <div class="menu span margins tabbed">
             <a id="info" href="landing.php">INFO</a>
+            <?php if(isset($_SESSION["l"])) { ?>
             <a id="dictionary" href="dictionary.php">DICTIONARY</a>
+            <?php } ?>
             <!-- <a id="phonology"  href="phonology.php">PHONOLOGY</a> -->
             <?php if(isset($_SESSION["uid"])) { ?>
             <a id="script" href="script.php">SCRIPT</a>

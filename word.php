@@ -102,12 +102,16 @@ $conlang = $conlangs->fetch_assoc();
         <h2 >Synonyms</h2>
         <ul>
           <?php
-          $englishListFormatted = join("\" OR english=\"", $englishList);
-          $englishListFormatted = "english=\"" . $englishListFormatted . "\"";
-          $otherWords = $conn->query("SELECT * FROM meanings LEFT JOIN words ON meanings.word_id=words.id WHERE conlang_id=" . $word["conlang_id"] . " AND " . $englishListFormatted . "AND NOT word_id=" . $word["id"]);
-          if($otherWords->num_rows > 0) {
-            while($otherWord = $otherWords->fetch_assoc()) {
-              print("<a href=\"word.php?w={$otherWord["id"]}\" style=\"font-family: f{$conlang["script_id"]}\">{$otherWord["name"]}</a><br />");
+          if(isset($englishList)) { //incase word has no meanings
+            $englishListFormatted = join("\" OR english=\"", $englishList);
+            $englishListFormatted = "english=\"" . $englishListFormatted . "\"";
+            $otherWords = $conn->query("SELECT * FROM meanings LEFT JOIN words ON meanings.word_id=words.id WHERE conlang_id=" . $word["conlang_id"] . " AND " . $englishListFormatted . "AND NOT word_id=" . $word["id"]);
+            if($otherWords->num_rows > 0) {
+              while($otherWord = $otherWords->fetch_assoc()) {
+                print("<a href=\"word.php?w={$otherWord["id"]}\" style=\"font-family: f{$conlang["script_id"]}\">{$otherWord["name"]}</a><br />");
+              }
+            } else {
+              print("None");
             }
           } else {
             print("None");

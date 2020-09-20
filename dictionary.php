@@ -8,8 +8,10 @@ if(!(isset($_GET["l"]))) {
   } else {
     header("Location: index.php");
   }
+} else {
+  $_SESSION["l"] = $_GET["l"];
 }
-$_SESSION["l"] = $_GET["l"];
+
 
 
 
