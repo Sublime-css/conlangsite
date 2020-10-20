@@ -146,3 +146,10 @@ function loadScript(script_id) { //MUST BE CALLED WHEN SCRIPT IS USED
   sheet.innerHTML += `@font-face { font-family: "f${script_id}"; src: url("fonts/${script_id}.ttf"); }`
   document.body.appendChild(sheet);
 }
+
+function checkMobile() {
+  mobile = window.matchMedia("(max-width: 800px)").matches
+}
+
+window.addEventListener("resize", checkMobile());
+checkMobile();

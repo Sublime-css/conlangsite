@@ -10,7 +10,7 @@ include "nav.php";
   <div class="page">
     <div class="wrapper">
       <div class="pageHeader">
-        <b>Languages on LANGFORGE <span class="help-text">These are user created languages, click on them to go to their dictionary</span></b>
+        <b>Languages on LANGFORGE <!-- <span class="help-text">These are user created languages, click on them to go to their dictionary</span> --></b>
         <?php
         if(isset($_SESSION["uid"])) {
           print "<a style=\"float: right;\" href=\"languageedit.php\">Create Language</a>";

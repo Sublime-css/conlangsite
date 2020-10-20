@@ -244,6 +244,24 @@ input {
   z-index: 1;
 }
 
+
+p {
+  margin: 0;
+  padding: 0.5em;
+}
+
+.mobile-button .wrapper {
+  display: none;
+  background-color: white;
+  padding: 0.125em;
+}
+
+.mobile-button svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+/* MOBILE */
 @media screen and (max-width: 800px) {
   .margins {
     width: 95%;
@@ -265,4 +283,10 @@ input {
   .span {
     flex-wrap: wrap;
   }
+
+  /*.mobile-button .wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0.5em;
+  }*/
 }
